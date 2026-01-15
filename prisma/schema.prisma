@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 상담 신청 리드 모델
+model Lead {
+  id          String   @id @default(cuid())
+  name        String   // 이름
+  phone       String   // 전화번호
+  roomType    String?  // 관심 평형 (예: 59A, 84B)
+  message     String?  // 추가 메모
+  createdAt   DateTime @default(now())
+  isContacted Boolean  @default(false) // 연락 완료 여부
+
+  @@map("leads")
+}
