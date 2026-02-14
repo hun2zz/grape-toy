@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -8,59 +9,80 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const features = [
+const facilities = [
     {
-        icon: (
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        ),
+        image: '/images/kids-station.png',
+        title: '센트레가든 · 키즈스테이션',
+        description: '놀이와 자연이 어우러진 단지 중심 공간. 아이들의 건강한 성장을 위한 특별한 놀이터.',
+        highlights: ['키즈스테이션', '센트레가든', '워터플레이'],
+    },
+    {
+        image: '/images/back1.png',
         title: '영산강 리버뷰',
         description: '강변이 파노라마뷰로 펼쳐지는 특별한 조망. 수변공원과 연결된 산책로에서 여유로운 일상을 즐기세요.',
         highlights: ['강변 파노라마뷰', '수변공원 연결', '자전거도로'],
     },
     {
-        icon: (
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-        ),
-        title: '프리미엄 커뮤니티',
-        description: '휘트니스, 골프연습장, 도서관까지. 명품 커뮤니티로 입주민의 행복지수를 높입니다.',
-        highlights: ['휘트니스 & GX룸', '스크린골프', '작은도서관'],
+        image: '/images/frairy-station.png',
+        title: '요정마을 놀이터',
+        description: '동화 속 세상을 구현한 테마형 어린이 놀이터.',
+        highlights: ['테마 놀이터', '안전 설계'],
     },
     {
-        icon: (
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        ),
-        title: '어린이 특화 시설',
-        description: '100명 규모 단지 내 어린이집과 키즈그라운드. 아이들의 건강한 성장을 위한 특별한 공간.',
-        highlights: ['단지 내 어린이집', '키즈그라운드', '키즈팜'],
+        image: '/images/bike-station.png',
+        title: '바이크스테이션',
+        description: '입주민 전용 자전거 보관 및 정비 공간.',
+        highlights: ['자전거 보관', '정비 공간'],
     },
     {
-        icon: (
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-        ),
-        title: '스마트홈 시스템',
-        description: '전라도 최초 KT 인공지능 홈서비스. IoT 기반 첨단 스마트홈으로 편리한 생활.',
-        highlights: ['AI 홈서비스', '원격검침', '전기차충전소'],
+        image: '/images/buddigue-garden.png',
+        title: '부띠끄가든',
+        description: '아름다운 조경과 놀이가 함께하는 프리미엄 야외 커뮤니티 공간.',
+        highlights: ['테마 정원', '야외 놀이', '조경 특화'],
     },
 ];
+
+function FacilityCard({ facility, className }: { facility: typeof facilities[0]; className?: string }) {
+    return (
+        <div className={`relative overflow-hidden rounded-2xl group cursor-pointer ${className || ''}`}>
+            <Image
+                src={facility.image}
+                alt={facility.title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1C2536]/90 via-[#1C2536]/30 to-transparent" />
+            <div className="relative z-10 flex flex-col justify-end h-full p-5 md:p-6">
+                <h3 className="text-lg md:text-xl font-bold text-white mb-1">
+                    {facility.title}
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed mb-3 line-clamp-2">
+                    {facility.description}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                    {facility.highlights.map((h, i) => (
+                        <span
+                            key={i}
+                            className="text-xs px-2.5 py-1 rounded-full bg-white/15 text-white/90 backdrop-blur-sm"
+                        >
+                            {h}
+                        </span>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function PremiumSection() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLDivElement>(null);
-    const cardsRef = useRef<HTMLDivElement>(null);
+    const gridRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!sectionRef.current) return;
 
         const ctx = gsap.context(() => {
-            // 타이틀 애니메이션
             gsap.fromTo(
                 titleRef.current,
                 { opacity: 0, y: 50 },
@@ -76,19 +98,19 @@ export default function PremiumSection() {
                 }
             );
 
-            // 카드 stagger 애니메이션
-            if (cardsRef.current) {
+            if (gridRef.current) {
+                const cards = gridRef.current.querySelectorAll('[data-card]');
                 gsap.fromTo(
-                    cardsRef.current.children,
-                    { opacity: 0, y: 60 },
+                    cards,
+                    { opacity: 0, y: 50 },
                     {
                         opacity: 1,
                         y: 0,
                         duration: 0.7,
-                        stagger: 0.15,
+                        stagger: 0.12,
                         ease: 'power3.out',
                         scrollTrigger: {
-                            trigger: cardsRef.current,
+                            trigger: gridRef.current,
                             start: 'top 80%',
                             toggleActions: 'play none none reverse',
                         },
@@ -119,44 +141,52 @@ export default function PremiumSection() {
                     </p>
                 </div>
 
-                {/* 특장점 카드 */}
-                <div
-                    ref={cardsRef}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                >
-                    {features.map((feature, index) => (
-                        <div
-                            key={index}
-                            className="group card bg-white hover:bg-gradient-to-br hover:from-[#1C2536] hover:to-[#2C3E50] transition-all duration-500"
-                        >
-                            {/* 아이콘 */}
-                            <div className="w-16 h-16 rounded-2xl bg-[#D4AF37]/10 flex items-center justify-center text-[#D4AF37] mb-5 group-hover:bg-[#D4AF37]/20 transition-colors">
-                                {feature.icon}
+                {/* 벤토 그리드 */}
+                <div ref={gridRef} className="flex flex-col gap-4">
+                    {/* 상단: 히어로(kids-station) + 우측 2단 */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {/* 좌: kids-station — 세로형(~4:5) 이미지라 세로로 크게 */}
+                        <div data-card>
+                            <FacilityCard
+                                facility={facilities[0]}
+                                className="h-[300px] lg:h-full"
+                            />
+                        </div>
+
+                        {/* 우: 2단 구성 */}
+                        <div className="flex flex-col gap-4">
+                            {/* 상: 영산강 리버뷰 — 가로형(~3:2) */}
+                            <div data-card>
+                                <FacilityCard
+                                    facility={facilities[1]}
+                                    className="h-[220px] lg:h-[240px]"
+                                />
                             </div>
-
-                            {/* 타이틀 */}
-                            <h3 className="text-xl font-bold text-[#1C2536] mb-3 group-hover:text-white transition-colors">
-                                {feature.title}
-                            </h3>
-
-                            {/* 설명 */}
-                            <p className="text-[#6B7280] text-sm leading-relaxed mb-5 group-hover:text-white/80 transition-colors">
-                                {feature.description}
-                            </p>
-
-                            {/* 하이라이트 태그 */}
-                            <div className="flex flex-wrap gap-2">
-                                {feature.highlights.map((highlight, idx) => (
-                                    <span
-                                        key={idx}
-                                        className="text-xs px-3 py-1 rounded-full bg-[#F3F4F6] text-[#4B5563] group-hover:bg-white/10 group-hover:text-white/90 transition-colors"
-                                    >
-                                        {highlight}
-                                    </span>
-                                ))}
+                            {/* 하: 요정마을 + 바이크 — 둘 다 가로형(~3:2) */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div data-card>
+                                    <FacilityCard
+                                        facility={facilities[2]}
+                                        className="h-[200px]"
+                                    />
+                                </div>
+                                <div data-card>
+                                    <FacilityCard
+                                        facility={facilities[3]}
+                                        className="h-[200px]"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    ))}
+                    </div>
+
+                    {/* 하단: 부띠끄가든 — 파노라마(~3:1) 이미지라 풀와이드 배너 */}
+                    <div data-card>
+                        <FacilityCard
+                            facility={facilities[4]}
+                            className="h-[200px] lg:h-[240px]"
+                        />
+                    </div>
                 </div>
             </div>
         </section>

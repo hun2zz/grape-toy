@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -11,6 +12,7 @@ if (typeof window !== 'undefined') {
 const floorPlans = [
     {
         type: '59㎡A',
+        image: '/images/59a.png',
         units: 140,
         exclusive: '59.71㎡',
         supply: '84.42㎡',
@@ -20,6 +22,7 @@ const floorPlans = [
     },
     {
         type: '59㎡B',
+        image: '/images/59m2b.png',
         units: 10,
         exclusive: '59.71㎡',
         supply: '84.00㎡',
@@ -29,6 +32,7 @@ const floorPlans = [
     },
     {
         type: '84㎡A',
+        image: '/images/84m2a.png',
         units: 880,
         exclusive: '84.72㎡',
         supply: '110.84㎡',
@@ -39,6 +43,7 @@ const floorPlans = [
     },
     {
         type: '84㎡B',
+        image: '/images/84m2b.png',
         units: 228,
         exclusive: '84.98㎡',
         supply: '111.46㎡',
@@ -49,7 +54,7 @@ const floorPlans = [
 ];
 
 export default function FloorPlanSection() {
-    const [activeTab, setActiveTab] = useState(2); // 84A가 기본
+    const [activeTab, setActiveTab] = useState(2);
     const sectionRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -79,8 +84,8 @@ export default function FloorPlanSection() {
         if (!contentRef.current) return;
         gsap.fromTo(
             contentRef.current,
-            { opacity: 0, x: 20 },
-            { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' }
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
         );
     }, [activeTab]);
 
@@ -126,53 +131,73 @@ export default function FloorPlanSection() {
                     ))}
                 </div>
 
-                {/* 평형 정보 카드 */}
+                {/* 콘텐츠: 이미지 + 정보 패널 */}
                 <div
                     ref={contentRef}
-                    className="max-w-4xl mx-auto bg-white/5 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/10"
+                    key={activeTab}
+                    className="max-w-5xl mx-auto"
                 >
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {/* 왼쪽: 정보 */}
-                        <div>
-                            <div className="flex items-center gap-4 mb-6">
-                                <span className="text-4xl md:text-5xl font-bold text-[#D4AF37]">
-                                    {activePlan.type}
-                                </span>
-                                <span className="px-3 py-1 bg-white/10 text-white/80 rounded-full text-sm">
-                                    {activePlan.units}세대
-                                </span>
-                            </div>
-
-                            <p className="text-white/80 text-lg mb-8">
-                                {activePlan.description}
-                            </p>
-
-                            {/* 면적 정보 */}
-                            <div className="space-y-4">
-                                <div className="flex justify-between items-center py-3 border-b border-white/10">
-                                    <span className="text-white/60">전용면적</span>
-                                    <span className="text-white font-semibold">{activePlan.exclusive}</span>
-                                </div>
-                                <div className="flex justify-between items-center py-3 border-b border-white/10">
-                                    <span className="text-white/60">공급면적</span>
-                                    <span className="text-white font-semibold">{activePlan.supply}</span>
-                                </div>
-                                <div className="flex justify-between items-center py-3 border-b border-white/10">
-                                    <span className="text-white/60">계약면적</span>
-                                    <span className="text-white font-semibold">{activePlan.contract}</span>
-                                </div>
-                            </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+                        {/* 좌: 평면도 이미지 (3/5) */}
+                        <div className="lg:col-span-3 bg-white rounded-3xl p-4 md:p-6 shadow-lg">
+                            <Image
+                                src={activePlan.image}
+                                alt={`${activePlan.type} 평면도`}
+                                width={1094}
+                                height={1506}
+                                className="w-full h-auto"
+                                priority
+                            />
                         </div>
 
-                        {/* 오른쪽: 특징 & CTA */}
-                        <div className="flex flex-col justify-between">
-                            <div>
-                                <h4 className="text-white font-semibold mb-4">주요 특징</h4>
-                                <div className="flex flex-wrap gap-2 mb-8">
+                        {/* 우: 요약 정보 패널 (2/5) */}
+                        <div className="lg:col-span-2 flex flex-col gap-5">
+                            {/* 타입 헤더 */}
+                            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <span className="text-3xl md:text-4xl font-bold text-[#D4AF37]">
+                                        {activePlan.type}
+                                    </span>
+                                    <span className="px-3 py-1 bg-white/10 text-white/80 rounded-full text-sm">
+                                        {activePlan.units}세대
+                                    </span>
+                                </div>
+                                <p className="text-white/70 leading-relaxed">
+                                    {activePlan.description}
+                                </p>
+                            </div>
+
+                            {/* 면적 정보 */}
+                            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                                <h4 className="text-white font-semibold mb-4 text-sm tracking-wider">
+                                    면적 정보
+                                </h4>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between items-center py-2 border-b border-white/10">
+                                        <span className="text-white/50 text-sm">전용면적</span>
+                                        <span className="text-white font-semibold">{activePlan.exclusive}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-white/10">
+                                        <span className="text-white/50 text-sm">공급면적</span>
+                                        <span className="text-white font-semibold">{activePlan.supply}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="text-white/50 text-sm">계약면적</span>
+                                        <span className="text-white font-semibold">{activePlan.contract}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 특징 태그 */}
+                            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                                <h4 className="text-white font-semibold mb-4 text-sm tracking-wider">
+                                    주요 특징
+                                </h4>
+                                <div className="flex flex-wrap gap-2">
                                     {activePlan.features.map((feature, idx) => (
                                         <span
                                             key={idx}
-                                            className="px-4 py-2 bg-[#D4AF37]/20 text-[#D4AF37] rounded-full text-sm font-medium"
+                                            className="px-4 py-2 bg-[#D4AF37]/15 text-[#D4AF37] rounded-full text-sm font-medium"
                                         >
                                             {feature}
                                         </span>
@@ -180,7 +205,8 @@ export default function FloorPlanSection() {
                                 </div>
                             </div>
 
-                            <button className="btn-primary w-full">
+                            {/* CTA */}
+                            <button className="btn-primary w-full py-4">
                                 {activePlan.type} 상담 신청하기
                             </button>
                         </div>
