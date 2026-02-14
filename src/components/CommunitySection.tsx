@@ -19,19 +19,10 @@ const communityItems = [
     { name: '코인세탁실', icon: '🧺' },
 ];
 
-const gardens = [
-    { name: '센트레가든', description: '아름다운 풍경의 석가산정원' },
-    { name: '피크닉가든', description: '가족이 즐기는 야외 레크레이션' },
-    { name: '메이플가든', description: '단풍나무 숲속의 그늘 쉼터' },
-    { name: '그라스가든', description: '영산강의 억새 풍경 정원' },
-    { name: '리버스케이프가든', description: '영산강 풍경의 옥상정원' },
-];
-
 export default function CommunitySection() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLDivElement>(null);
     const itemsRef = useRef<HTMLDivElement>(null);
-    const gardensRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!sectionRef.current) return;
@@ -67,23 +58,6 @@ export default function CommunitySection() {
                     }
                 );
             }
-
-            if (gardensRef.current) {
-                gsap.fromTo(
-                    gardensRef.current.children,
-                    { opacity: 0, x: -30 },
-                    {
-                        opacity: 1,
-                        x: 0,
-                        duration: 0.6,
-                        stagger: 0.1,
-                        scrollTrigger: {
-                            trigger: gardensRef.current,
-                            start: 'top 80%',
-                        },
-                    }
-                );
-            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -108,7 +82,7 @@ export default function CommunitySection() {
                 {/* 커뮤니티 시설 그리드 */}
                 <div
                     ref={itemsRef}
-                    className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
+                    className="grid grid-cols-2 md:grid-cols-4 gap-4"
                 >
                     {communityItems.map((item, index) => (
                         <div
@@ -121,38 +95,6 @@ export default function CommunitySection() {
                             <span className="text-[#1C2536] font-medium">{item.name}</span>
                         </div>
                     ))}
-                </div>
-
-                {/* 정원 테마 */}
-                <div className="bg-gradient-to-r from-[#1C2536] to-[#2C3E50] rounded-3xl p-8 md:p-12">
-                    <div className="flex flex-col md:flex-row gap-8">
-                        <div className="md:w-1/3">
-                            <span className="text-[#D4AF37] text-sm font-semibold tracking-wider">
-                                ARTE GARDEN
-                            </span>
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mt-2 mb-4">
-                                6개의 테마 정원
-                            </h3>
-                            <p className="text-white/70 leading-relaxed">
-                                아름다운 풍경과 쾌적한 휴식공간이 있는 아뜰리에 거리로
-                                남악을 대표하는 생활을 제공합니다.
-                            </p>
-                        </div>
-
-                        <div ref={gardensRef} className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {gardens.map((garden, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:bg-white/15 transition-colors"
-                                >
-                                    <h4 className="text-[#D4AF37] font-semibold mb-1">
-                                        {garden.name}
-                                    </h4>
-                                    <p className="text-white/70 text-sm">{garden.description}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
