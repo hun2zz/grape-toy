@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
+import { openConsultationModal } from './ConsultationModal';
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -136,7 +137,7 @@ export default function LocationSection() {
 
                         {/* 문의 버튼 */}
                         <button
-                            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={openConsultationModal}
                             className="btn-primary w-full py-4"
                         >
                             📞 방문 상담 예약하기

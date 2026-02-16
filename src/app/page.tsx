@@ -5,6 +5,7 @@ import FloorPlanSection from "@/components/FloorPlanSection";
 import CommunitySection from "@/components/CommunitySection";
 import ContactSection from "@/components/ContactSection";
 import FloatingActionBar from "@/components/FloatingActionBar";
+import ConsultationModal from "@/components/ConsultationModal";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <CommunitySection />
       <ContactSection />
       <FloatingActionBar />
+      <ConsultationModal />
 
       {/* 푸터 */}
       <footer className="bg-[#0D1520] text-white/60 py-12">
@@ -29,7 +31,7 @@ export default function Home() {
           <div className="flex justify-center gap-6 text-sm">
             <span>시행: 한국토지신탁</span>
             <span>|</span>
-            <span>분양문의: 1588-0000</span>
+            <a href="tel:010-5696-1518" className="hover:text-white transition-colors">분양문의: 010-5696-1518</a>
           </div>
           <p className="text-xs mt-8 text-white/40">
             본 홍보물의 내용은 개발계획 변경 등으로 실제와 다를 수 있으니 계약 시 반드시 확인하시기 바랍니다.

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { openConsultationModal } from './ConsultationModal';
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -206,7 +207,10 @@ export default function FloorPlanSection() {
                             </div>
 
                             {/* CTA */}
-                            <button className="btn-primary w-full py-4">
+                            <button
+                                onClick={openConsultationModal}
+                                className="btn-primary w-full py-4"
+                            >
                                 {activePlan.type} 상담 신청하기
                             </button>
                         </div>

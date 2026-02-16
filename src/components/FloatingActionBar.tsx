@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { openConsultationModal } from './ConsultationModal';
 
 export default function FloatingActionBar() {
     const [isVisible, setIsVisible] = useState(false);
@@ -16,13 +17,13 @@ export default function FloatingActionBar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const scrollToContact = () => {
-        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    const handleOnlineConsultation = () => {
         setIsExpanded(false);
+        openConsultationModal();
     };
 
     const callPhone = () => {
-        window.location.href = 'tel:1588-0000';
+        window.location.href = 'tel:010-5696-1518';
     };
 
     if (!isVisible) return null;
@@ -45,7 +46,7 @@ export default function FloatingActionBar() {
                     </button>
 
                     <button
-                        onClick={scrollToContact}
+                        onClick={handleOnlineConsultation}
                         className="flex items-center gap-3 px-5 py-3 bg-white/90 backdrop-blur-lg rounded-full shadow-lg hover:bg-white transition-colors"
                     >
                         <span className="w-10 h-10 rounded-full bg-[#D4AF37] flex items-center justify-center text-white">
