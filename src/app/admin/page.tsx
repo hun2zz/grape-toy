@@ -15,11 +15,56 @@ interface Lead {
 type FilterType = 'all' | 'pending' | 'contacted';
 
 export default function AdminPage() {
+    const [authed, setAuthed] = useState<boolean | null>(null);
+    const [password, setPassword] = useState('');
+    const [loginError, setLoginError] = useState('');
+    const [loginLoading, setLoginLoading] = useState(false);
+
     const [leads, setLeads] = useState<Lead[]>([]);
     const [total, setTotal] = useState(0);
     const [filter, setFilter] = useState<FilterType>('all');
     const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
     const [loading, setLoading] = useState(true);
+
+    // Check auth on mount
+    useEffect(() => {
+        fetch('/api/admin/check')
+            .then(res => res.json())
+            .then(data => setAuthed(data.authenticated))
+            .catch(() => setAuthed(false));
+    }, []);
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoginLoading(true);
+        setLoginError('');
+
+        try {
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password }),
+            });
+            if (res.ok) {
+                setAuthed(true);
+                setPassword('');
+            } else {
+                const data = await res.json();
+                setLoginError(data.error || '로그인에 실패했습니다.');
+            }
+        } catch {
+            setLoginError('서버에 연결할 수 없습니다.');
+        } finally {
+            setLoginLoading(false);
+        }
+    };
+
+    const handleLogout = async () => {
+        await fetch('/api/admin/logout', { method: 'POST' });
+        setAuthed(false);
+        setLeads([]);
+        setTotal(0);
+    };
 
     const fetchLeads = useCallback(async () => {
         setLoading(true);
@@ -31,6 +76,10 @@ export default function AdminPage() {
             params.set('order', sortOrder);
 
             const res = await fetch(`/api/leads?${params.toString()}`);
+            if (res.status === 401) {
+                setAuthed(false);
+                return;
+            }
             const data = await res.json();
             setLeads(data.leads || []);
             setTotal(data.total || 0);
@@ -42,8 +91,8 @@ export default function AdminPage() {
     }, [filter, sortOrder]);
 
     useEffect(() => {
-        fetchLeads();
-    }, [fetchLeads]);
+        if (authed) fetchLeads();
+    }, [authed, fetchLeads]);
 
     const toggleContacted = async (id: string, currentStatus: boolean) => {
         try {
@@ -90,6 +139,49 @@ export default function AdminPage() {
         });
     };
 
+    // Loading state
+    if (authed === null) {
+        return (
+            <div className="min-h-screen bg-[#F8F7F4] flex items-center justify-center">
+                <p className="text-gray-400">로딩 중...</p>
+            </div>
+        );
+    }
+
+    // Login form
+    if (!authed) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-[#1C2536] to-[#2C3E50] flex items-center justify-center px-4">
+                <div className="max-w-sm w-full bg-white rounded-2xl p-8 shadow-lg">
+                    <h1 className="text-2xl font-bold text-[#1C2536] text-center mb-2">관리자 로그인</h1>
+                    <p className="text-gray-400 text-sm text-center mb-8">남악 센트레빌 리버파크</p>
+                    <form onSubmit={handleLogin} className="space-y-4">
+                        <div>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="비밀번호 입력"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-[#1C2536] transition-colors"
+                                autoFocus
+                            />
+                        </div>
+                        {loginError && (
+                            <p className="text-red-500 text-sm text-center">{loginError}</p>
+                        )}
+                        <button
+                            type="submit"
+                            disabled={loginLoading || !password}
+                            className="w-full py-3 bg-[#1C2536] text-white rounded-xl font-semibold hover:bg-[#2C3E50] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {loginLoading ? '확인 중...' : '로그인'}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-[#F8F7F4]">
             {/* 헤더 */}
@@ -100,12 +192,20 @@ export default function AdminPage() {
                             <h1 className="text-2xl font-bold">상담 관리</h1>
                             <p className="text-white/60 text-sm mt-1">남악 센트레빌 리버파크</p>
                         </div>
-                        <a
-                            href="/"
-                            className="px-4 py-2 bg-white/10 rounded-lg text-sm hover:bg-white/20 transition-colors"
-                        >
-                            홈으로
-                        </a>
+                        <div className="flex items-center gap-3">
+                            <a
+                                href="/"
+                                className="px-4 py-2 bg-white/10 rounded-lg text-sm hover:bg-white/20 transition-colors"
+                            >
+                                홈으로
+                            </a>
+                            <button
+                                onClick={handleLogout}
+                                className="px-4 py-2 bg-white/10 rounded-lg text-sm hover:bg-red-500/80 transition-colors"
+                            >
+                                로그아웃
+                            </button>
+                        </div>
                     </div>
                 </div>
             </header>

@@ -17,9 +17,39 @@ export default function ConsultationPage() {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+    const validateForm = (): boolean => {
+        const errors: Record<string, string> = {};
+
+        if (!formData.name || formData.name.trim().length < 2) {
+            errors.name = '이름은 2자 이상 입력해주세요.';
+        } else if (formData.name.trim().length > 50) {
+            errors.name = '이름은 50자 이하로 입력해주세요.';
+        }
+
+        const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
+        const cleanedPhone = formData.phone.replace(/\s/g, '');
+        if (!cleanedPhone) {
+            errors.phone = '연락처를 입력해주세요.';
+        } else if (!phoneRegex.test(cleanedPhone)) {
+            errors.phone = '올바른 휴대폰 번호를 입력해주세요. (예: 010-1234-5678)';
+        }
+
+        if (formData.message && formData.message.length > 1000) {
+            errors.message = '요청사항은 1000자 이하로 입력해주세요.';
+        }
+        if (formData.questions && formData.questions.length > 1000) {
+            errors.questions = '궁금한 점은 1000자 이하로 입력해주세요.';
+        }
+
+        setFieldErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validateForm()) return;
         setIsSubmitting(true);
 
         try {
@@ -31,8 +61,12 @@ export default function ConsultationPage() {
 
             if (res.ok) {
                 setIsSubmitted(true);
+            } else if (res.status === 429) {
+                const data = await res.json();
+                alert(data.error || '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.');
             } else {
-                alert('전송에 실패했습니다. 다시 시도해주세요.');
+                const data = await res.json();
+                alert(data.error || '전송에 실패했습니다. 다시 시도해주세요.');
             }
         } catch {
             alert('전송에 실패했습니다. 다시 시도해주세요.');
@@ -113,11 +147,13 @@ export default function ConsultationPage() {
                                     <input
                                         type="text"
                                         required
+                                        maxLength={50}
                                         value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors"
+                                        onChange={(e) => { setFormData({ ...formData, name: e.target.value }); setFieldErrors(prev => ({ ...prev, name: '' })); }}
+                                        className={`w-full px-5 py-4 bg-white/10 border rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors ${fieldErrors.name ? 'border-red-400' : 'border-white/20'}`}
                                         placeholder="홍길동"
                                     />
+                                    {fieldErrors.name && <p className="text-red-400 text-xs mt-1">{fieldErrors.name}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-white/80 text-sm font-medium mb-2">
@@ -127,10 +163,11 @@ export default function ConsultationPage() {
                                         type="tel"
                                         required
                                         value={formData.phone}
-                                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                        className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors"
+                                        onChange={(e) => { setFormData({ ...formData, phone: e.target.value }); setFieldErrors(prev => ({ ...prev, phone: '' })); }}
+                                        className={`w-full px-5 py-4 bg-white/10 border rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors ${fieldErrors.phone ? 'border-red-400' : 'border-white/20'}`}
                                         placeholder="010-0000-0000"
                                     />
+                                    {fieldErrors.phone && <p className="text-red-400 text-xs mt-1">{fieldErrors.phone}</p>}
                                 </div>
                             </div>
                         </div>
@@ -198,11 +235,13 @@ export default function ConsultationPage() {
                                     </label>
                                     <textarea
                                         value={formData.message}
-                                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                        onChange={(e) => { setFormData({ ...formData, message: e.target.value }); setFieldErrors(prev => ({ ...prev, message: '' })); }}
+                                        maxLength={1000}
                                         rows={3}
-                                        className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors resize-none"
+                                        className={`w-full px-5 py-4 bg-white/10 border rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors resize-none ${fieldErrors.message ? 'border-red-400' : 'border-white/20'}`}
                                         placeholder="상담 시 요청하실 사항을 적어주세요"
                                     />
+                                    {fieldErrors.message && <p className="text-red-400 text-xs mt-1">{fieldErrors.message}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-white/80 text-sm font-medium mb-2">
@@ -210,11 +249,13 @@ export default function ConsultationPage() {
                                     </label>
                                     <textarea
                                         value={formData.questions}
-                                        onChange={(e) => setFormData({ ...formData, questions: e.target.value })}
+                                        onChange={(e) => { setFormData({ ...formData, questions: e.target.value }); setFieldErrors(prev => ({ ...prev, questions: '' })); }}
+                                        maxLength={1000}
                                         rows={3}
-                                        className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors resize-none"
+                                        className={`w-full px-5 py-4 bg-white/10 border rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#D4AF37] transition-colors resize-none ${fieldErrors.questions ? 'border-red-400' : 'border-white/20'}`}
                                         placeholder="분양 관련 궁금한 점을 적어주세요"
                                     />
+                                    {fieldErrors.questions && <p className="text-red-400 text-xs mt-1">{fieldErrors.questions}</p>}
                                 </div>
                             </div>
                         </div>
