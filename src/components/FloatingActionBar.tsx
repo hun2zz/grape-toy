@@ -23,7 +23,7 @@ export default function FloatingActionBar() {
     };
 
     const callPhone = () => {
-        window.location.href = 'tel:010-5696-1518';
+        window.location.href = 'tel:061-982-1538';
     };
 
     if (!isVisible) return null;
