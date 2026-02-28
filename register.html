@@ -1,0 +1,1775 @@
+<!--@layout(/layout/basic/layout.html)-->
+
+<head>
+    <style>
+        /* 기본정보 섹션의 중복된 상호명과 사업자번호 필드 숨기기
+            #companyRow,
+            #companyNoRow {
+              display: none !important;
+            } */
+
+        /* OCR 관련 스타일 */
+        #ocrProgress .txtInfo {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        #ocrResult .txtSuccess {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        #ocrError .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .inputTypeText {
+            width: 200px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<div class="section path" data-ez="module-0zw8wop-1" data-ez-module="user-defined/1" data-ez-name="USER DEFINED"
+    data-ez-type="plain">
+    <span>현재 위치</span>
+    <ol>
+        <li><a href="/">홈</a></li>
+        <li title="현재 위치"><strong>회원 가입</strong></li>
+    </ol>
+</div>
+<div class="section titleArea" data-ez="module-1wjz57g-1" data-ez-module="user-defined/1" data-ez-name="USER DEFINED"
+    data-ez-type="plain">
+    <h2>회원 가입</h2>
+</div>
+<div class="section ec-base-step" data-ez="module-0rm69v7-1" data-ez-module="user-defined/1" data-ez-name="USER DEFINED"
+    data-ez-type="plain">
+    <ol class="step">
+        <li>1. 약관동의</li>
+        <li class="selected">2. 정보입력</li>
+        <li>3. 가입완료</li>
+    </ol>
+</div>
+<div module="member_join" class="memberArea" data-ez="contents-1l9u0on-1">
+    <!--@css(/css/module/member/join.css)-->
+    <!--
+                $returnUrl = /member/join_result.html
+                $checkIdUrl = /member/check_id.html
+                $personalName = 이름
+                $companyName = 법인명
+                $companySsn = 법인번호
+                $foreignerSsn1 = 외국인 등록번호
+                $foreignerSsn2 = 여권번호
+                $foreignerSsn3 = 국제운전면허증번호
+                $isRuleBasedAddrForm = T
+             -->
+    <div class="titleArea titleArea--middle {$display_base_column_title|display}">
+        <h3>회원인증</h3>
+        <br>
+        <h5 style="color: #FF4500; line-height: 1.5; text-align: left;">
+            *사업자 구매를 원하시는 원장님들께서는 <br> 반드시 "사업자회원"으로 가입 부탁드립니다.
+        </h5>
+
+    </div>
+    <div class="ec-base-table typeWrite {$display_base_column_title|display}">
+        <table border="1">
+            <caption>
+                회원가입
+            </caption>
+            <colgroup>
+                <col style="width: 190px" />
+                <col style="width: auto" />
+            </colgroup>
+            <tbody>
+                <tr class="{$display_member_type|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />회원구분
+                    </th>
+                    <td>{$form.member_type}</td>
+                </tr>
+                <tr id="companyWrap">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />사업자구분
+                    </th>
+                    <td>{$form.company_type}</td>
+                </tr>
+                <tr id="authMember">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />회원인증
+                    </th>
+                    <td class="formMultiple">
+                        <div id="authWrap" style="display: none">
+                            <div id="personAuth">
+                                <div id="personalTypeWrap">{$form.personal_type}</div>
+                                <div id="ipinWrap">
+                                    <a href="#none" class="btnNormal sizeS" onclick="{$action_ipin_open}">아이핀인증</a>
+                                    <p class="gBlank5">
+                                        아이핀이란, 회원님의 개인정보 보호를 위해 웹사이트에
+                                        주민등록번호를 제공하지 않고 본인임을 확인하는 인터넷상의
+                                        개인식별번호 서비스입니다. <br />아이핀을 통한 가입을
+                                        원하시면 아이핀 인증 버튼을 눌러 진행해 주십시오.
+                                    </p>
+                                </div>
+                                <div id="mobileWrap">
+                                    <a href="#none" class="btnNormal sizeS" onclick="{$action_mobile_open}">휴대폰인증</a>
+                                    <p class="gBlank5">
+                                        본인 명의의 휴대폰으로 본인인증을 진행합니다.
+                                    </p>
+                                </div>
+                                <div id="emailWrap">
+                                    <ul class="txtInfo">
+                                        <li>
+                                            기본정보 &gt; 이메일 항목에 입력하신 정보로 본인인증을
+                                            진행합니다.
+                                        </li>
+                                        <li>
+                                            회원가입 후에 입력하신 이메일 주소로 인증 메일이
+                                            발송되오니, 확인해 주시기 바랍니다.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div id="businessAuth">
+                                <dl>
+                                    <dt>법인명</dt>
+                                    <dd>{$form.bname}</dd>
+                                    <dt>법인번호</dt>
+                                    <dd class="formGroup code">
+                                        {$form.bssn1} - {$form.bssn2}
+                                        <a href="#none" class="btnNormal" onclick="{$action_business_dupl}">중복확인</a>
+                                    </dd>
+                                </dl>
+                            </div>
+
+                            <div id="foreignerAuth">
+                                <dl>
+                                    <dt>이름(Name)</dt>
+                                    <dd>{$form.foreigner_name}</dd>
+                                    <dt>{$form.foreigner_type}</dt>
+                                    <dd class="formGroup">
+                                        {$form.foreigner_ssn}
+                                        <a href="#none" class="btnNormal" onclick="{$action_foreigner_check}">중복확인</a>
+                                    </dd>
+                                    <div id="foreignerPersonWrap">
+                                        <p class="txtInfo">
+                                            회사는 회원의 본인확인 및 서비스제공을 위하여
+                                            고유식별정보를 수집하여 보관하며 개인정보처리방침에 따라
+                                            보유 및 이용합니다.<br />고유식별정보 제공을 거부하는 경우
+                                            서비스 이용이 제한됩니다.
+                                        </p>
+                                        <p>{$form.f_identification_check}</p>
+                                    </div>
+                                    <div id="foreignerEmailWrap">
+                                        <ul class="txtInfo">
+                                            <li>
+                                                기본정보 &gt; 이메일 항목에 입력하신 정보로 본인인증을
+                                                진행합니다.
+                                            </li>
+                                            <li>
+                                                회원가입 후에 입력하신 이메일 주소로 인증 메일이
+                                                발송되오니, 확인해 주시기 바랍니다.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="bizInfoArea" style="display: none">
+        <div class="titleArea titleArea--middle {$display_base_column_title|display}">
+            <h3>사업자 정보</h3>
+            <p class="required {$display_base_column_title|display}">
+                <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                    ez-prevent="img" />필수입력사항
+            </p>
+        </div>
+        <div class="ec-base-table typeWrite">
+            <table border="1">
+                <caption>
+                    회원 기본정보
+                </caption>
+                <colgroup>
+                    <col style="width: 190px" />
+                    <col style="width: auto" />
+                </colgroup>
+                <tbody>
+                    <!-- <tr>
+                    <th scope="row">
+                      <img
+                        src="/SkinImg/img/ico_required.svg"
+                        class="icon icoRequired"
+                        alt="필수"
+                        loading="lazy"
+                        ez-prevent="img"
+                      />상호명
+                    </th>
+                    <td>
+                      {$form.cname}
+                      <p class="txtInfo">사업자등록증 첨부 시 자동으로 입력됩니다.</p>
+                    </td>
+                  </tr>
+                  <tr class="{$display_use_id|display}">
+                    <th scope="row">
+                      <img
+                        src="/SkinImg/img/ico_required.svg"
+                        class="icon icoRequired"
+                        alt="필수"
+                        loading="lazy"
+                        ez-prevent="img"
+                      />사업자번호
+                    </th>
+                    <td>
+                      {$form.cssn}
+                      <a
+                        href="#none"
+                        class="btnNormal {$display_cssn_dupl|display}"
+                        onclick="{$action_cssn_dupl}"
+                        >중복확인</a
+                      >
+                      <p id="{$cssnMsg_id}"></p>
+                      <p class="txtInfo">사업자등록증 첨부 시 자동으로 입력됩니다.</p>
+                    </td>
+                  </tr> -->
+                    <tr id="{$companyRow}">
+                        <th scope="row">
+                            <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                                ez-prevent="img" />상호명
+                        </th>
+                        <td id="companyName">{$form.cname}</td>
+                    </tr>
+                    <tr id="{$companyNoRow}">
+                        <th scope="row">
+                            <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                                ez-prevent="img" />사업자번호
+                        </th>
+                        <td class="formGroup" id="companySsn">
+                            {$form.cssn}
+                            <a href="#none" class="btnNormal {$display_cssn_dupl|display}"
+                                onclick="{$action_cssn_dupl}">중복확인</a>
+                            <p id="{$cssnMsg_id}"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                                ez-prevent="img" />
+                            이용약관
+                        </th>
+                        <td>
+                            <button type="button" id="openContractBtn" class="btnNormal">
+                                쇼핑몰 이용약관 동의
+                            </button>
+                            <input type="checkbox" id="contractCheck" name="contractCheck" style="display: none" />
+                            <label for="contractCheck" id="contractCheckLabel" style="visibility: hidden">체크 완료</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                                ez-prevent="img" />
+                            사업자 등록증 첨부
+                        </th>
+                        <td>
+                            <input type="file" id="bizLicense" name="bizLicense" accept=".jpg,.jpeg,.png,.pdf" />
+                            <div id="ocrProgress" style="display: none; margin-top: 10px">
+                                <p class="txtInfo">사업자등록증을 분석 중입니다...</p>
+                            </div>
+                            <div id="ocrResult" style="display: none; margin-top: 10px">
+                                <p class="txtInfo txtSuccess">
+                                    사업자등록증 정보가 자동으로 입력되었습니다.
+                                </p>
+                            </div>
+                            <div id="ocrError" style="display: none; margin-top: 10px">
+                                <p class="txtInfo error">
+                                    사업자등록증 분석에 실패했습니다. 파일을 다시 선택해주세요.
+                                </p>
+                            </div>
+                            <p class="txtInfo">이미지만 첨부 가능합니다.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="titleArea titleArea--middle {$display_base_column_title|display}">
+        <h3>기본정보</h3>
+        <p class="required {$display_base_column_title|display}">
+            <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                ez-prevent="img" />필수입력사항
+        </p>
+    </div>
+    <div class="ec-base-table typeWrite">
+        <table border="1">
+            <caption>
+                회원 기본정보
+            </caption>
+            <colgroup>
+                <col style="width: 190px" />
+                <col style="width: auto" />
+            </colgroup>
+            <tbody>
+                <tr class="{$display_use_id|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />아이디
+                    </th>
+                    <td>
+                        {$form.member_id}
+                        <div class="txtInfo">(영문소문자/숫자, 4~16자)</div>
+                        <p id="{$idMsg_id}" class="txtInfo txtSuccess"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />비밀번호
+                    </th>
+                    <td>
+                        <div class="eTooltip">
+                            {$form.passwd}
+                            <div class="ec-base-tooltip typeUpper">
+                                <div class="content">
+                                    <strong>※ {$passwd_terms}</strong>
+                                    <ul class="typeDash txtInfo">
+                                        {$passwd_chk_info}
+                                    </ul>
+                                </div>
+                                <a href="#none" class="btnClose">닫기</a>
+                                <span class="edge"></span>
+                            </div>
+                        </div>
+                        <div class="txtInfo">{$passwd_type_desc}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />비밀번호 확인
+                    </th>
+                    <td>
+                        {$form.user_passwd_confirm}
+                        <p class="txtInfo" id="{$pwConfirmMsg_id}"></p>
+                    </td>
+                </tr>
+                <tr class="{$display_hint|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />비밀번호 확인 질문
+                    </th>
+                    <td>{$form.hint}</td>
+                </tr>
+                <tr class="{$display_hint_answer|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />비밀번호 확인 답변
+                    </th>
+                    <td>{$form.hint_answer}</td>
+                </tr>
+                <tr>
+                    <th scope="row" id="{$name_title}">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />이름
+                    </th>
+                    <td>
+                        <span id="{$name_contents}">{$form.name}</span>
+                        <p id="under14Msg" class="txtInfo displaynone">
+                            14세 미만 사용자는 법정대리인 동의가 필요합니다.
+                        </p>
+                    </td>
+                </tr>
+                <tr class="{$display_eng_name|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_name_en|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />이름(영문)
+                    </th>
+                    <td>
+                        {$form.name_en}
+                        <span class="txtInfo">(이름 - 성 형식으로 입력해 주세요.)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" id="ssnTitle"></th>
+                    <td id="ssnContents"></td>
+                </tr>
+                <!-- <tr id="{$companyRow}">
+                  <th scope="row">
+                    <img
+                      src="/SkinImg/img/ico_required.svg"
+                      class="icon icoRequired"
+                      alt="필수"
+                      loading="lazy"
+                      ez-prevent="img"
+                    />상호명
+                  </th>
+                  <td id="companyName">{$form.cname}</td>
+                </tr>
+                <tr id="{$companyNoRow}">
+                  <th scope="row">
+                    <img
+                      src="/SkinImg/img/ico_required.svg"
+                      class="icon icoRequired"
+                      alt="필수"
+                      loading="lazy"
+                      ez-prevent="img"
+                    />사업자번호
+                  </th>
+                  <td class="formGroup" id="companySsn">
+                    {$form.cssn}
+                    <a
+                      href="#none"
+                      class="btnNormal {$display_cssn_dupl|display}"
+                      onclick="{$action_cssn_dupl}"
+                      >중복확인</a
+                    >
+                    <p id="{$cssnMsg_id}"></p>
+                  </td>
+                </tr> -->
+                <tr id="nation">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />국적
+                    </th>
+                    <td>{$form.citizenship}</td>
+                </tr>
+                <tr class="{$display_addr|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_address|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />주소
+                    </th>
+                    <td class="formMultiple">{$form.address}</td>
+                </tr>
+                <tr class="{$display_phone|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_phone|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />일반전화
+                    </th>
+                    <td class="formGroup code">{$form.phone}</td>
+                </tr>
+                <tr class="{$display_mobile|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_cell|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />휴대전화
+                    </th>
+                    <td class="formGroup code">
+                        {$form.mobile}<button type="button" id="{$btn_action_verify_mobile}"
+                            class="btnNormal {$display_verify_mobile|display}" onclick="{$action_verify_mobile}">
+                            인증번호받기
+                        </button>
+                        <p class="txtInfo {$bDisplayMobileVerifyInfoDefault|display} error"
+                            id="{$result_send_verify_mobile_fail}"></p>
+                        <ul class="txtInfo {$bDisplayMobileVerifyInfoDefault|display}"
+                            id="{$result_send_verify_mobile_success}">
+                            <li>인증번호가 발송되었습니다.</li>
+                            <li>인증번호를 받지 못하셨다면 휴대폰 번호를 확인해 주세요.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="{$display_verify_mobile_confirm|display}" id="{$confirm_verify_mobile}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />인증번호
+                    </th>
+                    <td class="formGroup">
+                        <div class="verify">
+                            <div>{$form.verify_sms_number}</div>
+                            <span class="time" id="{$expiryTime}"></span>
+                        </div>
+                        <button type="button" class="btnNormal" id="{$btn_verify_mobile_confirm}"
+                            onclick="{$action_verify_mobile_confirm}">
+                            확인
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg" class="icon icoRequired" alt="필수" loading="lazy"
+                            ez-prevent="img" />이메일
+                    </th>
+                    <td>
+                        {$form.email}
+                        <p class="txtInfo" id="{$emailMsg_id}"></p>
+                    </td>
+                </tr>
+                <tr class="{$display_is_lifetime|display}">
+                    <th scope="row">평생회원</th>
+                    <td>
+                        {$form.is_lifetime}
+                        <ul class="txtInfo">
+                            <li>
+                                평생회원으로 가입하시면 <strong>{$mall_name}</strong> 회원
+                                탈퇴시까지는 휴면회원으로 전환되지 않으며, 고객님의 개인정보가
+                                탈퇴시까지 안전하게 보관됩니다.
+                            </li>
+                            <li class="{$display_is_lifetime_benefit|display}">
+                                지금 평생회원으로 가입하시면 쿠폰혜택을 드립니다. (쿠폰혜택을
+                                받으신 경우, 3개월간 평생회원을 유지하셔야 합니다.)
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="titleArea titleArea--middle {$display_add_title|display}">
+        <h3>추가정보 <span class="desc">(선택)</span></h3>
+    </div>
+    <div class="ec-base-table typeWrite {$display_add_title|display}">
+        <table border="1">
+            <caption>
+                회원 추가정보
+            </caption>
+            <colgroup>
+                <col style="width: 190px" />
+                <col style="width: auto" />
+            </colgroup>
+            <tbody>
+                <tr class="{$display_nick|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_nick_name_flag|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                        별명
+                    </th>
+                    <td>
+                        {$form.nick_name} <span class="txtInfo" id="{$nick_msg}"></span>
+                    </td>
+                </tr>
+                <tr class="{$display_is_sex|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_sex|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                        성별
+                    </th>
+                    <td>{$form.is_sex}</td>
+                </tr>
+                <tr class="{$display_birthday|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_is_birthday|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                        생년월일
+                    </th>
+                    <td class="formGroup date">
+                        {$form.birth_year} 년 {$form.birth_month} 월 {$form.birth_day} 일<br /><span
+                            class="gFlow {$display_calendar_type|display}">{$form.is_solar_calendar}</span>
+                    </td>
+                </tr>
+                <tr class="{$display_marry|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_is_wedding_anniversary|display}" alt="필수"
+                            loading="lazy" ez-prevent="img" />
+                        결혼기념일
+                    </th>
+                    <td class="formGroup date">
+                        {$form.marry_year} 년 {$form.marry_month} 월 {$form.marry_day} 일
+                    </td>
+                </tr>
+                <tr class="{$display_partner|display}">
+                    <th scope="row">
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_is_life_partner|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                        배우자생일
+                    </th>
+                    <td class="formGroup date">
+                        {$form.partner_year} 년 {$form.partner_month} 월 {$form.partner_day}
+                        일
+                    </td>
+                </tr>
+                <tr class="{$display_child|display}">
+                    <th scope="row">
+                        자녀
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_child|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.child}</td>
+                </tr>
+                <tr class="{$display_school|display}">
+                    <th scope="row">
+                        최종학력
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_school|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.school}</td>
+                </tr>
+                <tr class="{$display_job_class|display}">
+                    <th scope="row">
+                        직종
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_job_class|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.job_class}</td>
+                </tr>
+                <tr class="{$display_job|display}">
+                    <th scope="row">
+                        직업
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_job|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.job}</td>
+                </tr>
+                <tr class="{$display_earning|display}">
+                    <th scope="row">
+                        연소득
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_earning|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.earning}</td>
+                </tr>
+                <tr class="{$display_car|display}">
+                    <th scope="row">
+                        자동차
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_car|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.car}</td>
+                </tr>
+                <tr class="{$display_region|display}">
+                    <th scope="row">
+                        지역
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_region|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.region}</td>
+                </tr>
+                <tr class="{$display_internet|display}">
+                    <th scope="row">
+                        인터넷 이용장소
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_internet|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.internet}</td>
+                </tr>
+                <tr class="{$display_inter|display}">
+                    <th scope="row">
+                        관심분야
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_interest|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>
+                        <div class="interest">{$form.inter_check}</div>
+                    </td>
+                </tr>
+                <tr class="{$display_add1|display}">
+                    <th scope="row">
+                        {$title_add1}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add1|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add1}</td>
+                </tr>
+                <tr class="{$display_add2|display}">
+                    <th scope="row">
+                        {$title_add2}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add2|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add2}</td>
+                </tr>
+                <tr class="{$display_add3|display}">
+                    <th scope="row">
+                        {$title_add3}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add3|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add3}</td>
+                </tr>
+                <tr class="{$display_add4|display}">
+                    <th scope="row">
+                        {$title_add4}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add4|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add4}</td>
+                </tr>
+                <tr class="{$display_add5|display}">
+                    <th scope="row">
+                        {$title_add5}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add5|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add5}</td>
+                </tr>
+                <tr class="{$display_add6|display}">
+                    <th scope="row">
+                        {$title_add6}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired $display_required_add6|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add6}</td>
+                </tr>
+                <tr class="{$display_add7|display}">
+                    <th scope="row">
+                        {$title_add7}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add7|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add7}</td>
+                </tr>
+                <tr class="{$display_add8|display}">
+                    <th scope="row">
+                        {$title_add8}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add8|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add8}</td>
+                </tr>
+                <tr class="{$display_add9|display}">
+                    <th scope="row">
+                        {$title_add9}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add9|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add9}</td>
+                </tr>
+                <tr class="{$display_add10|display}">
+                    <th scope="row">
+                        {$title_add10}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add10|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add10}</td>
+                </tr>
+                <tr class="{$display_add11|display}">
+                    <th scope="row">
+                        {$title_add11}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add11|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add11}</td>
+                </tr>
+                <tr class="{$display_add12|display}">
+                    <th scope="row">
+                        {$title_add12}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add12|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add12}</td>
+                </tr>
+                <tr class="{$display_add13|display}">
+                    <th scope="row">
+                        {$title_add13}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add13|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add13}</td>
+                </tr>
+                <tr class="{$display_add14|display}">
+                    <th scope="row">
+                        {$title_add14}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add14|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add14}</td>
+                </tr>
+                <tr class="{$display_add15|display}">
+                    <th scope="row">
+                        {$title_add15}
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_add15|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.add15}</td>
+                </tr>
+                <tr class="{$display_reco_id|display}">
+                    <th scope="row">
+                        추천인 아이디 (없을 시 'vemontes' 기재)
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_reco_id|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td>{$form.reco_id}</td>
+                </tr>
+                <tr class="{$display_bank|display}">
+                    <th scope="row">
+                        환불계좌 정보
+                        <img src="/SkinImg/img/ico_required.svg"
+                            class="icon icoRequired {$display_required_bank_account_no|display}" alt="필수" loading="lazy"
+                            ez-prevent="img" />
+                    </th>
+                    <td class="formMultiple">
+                        <dl>
+                            <dt>예금주</dt>
+                            <dd>{$form.bank_account_owner}</dd>
+                            <dt>은행명</dt>
+                            <dd>{$form.refund_bank_code}</dd>
+                            <dt>계좌번호</dt>
+                            <dd>
+                                {$form.bank_account_no}
+                                <span class="txtInfo">('-'와 숫자만 입력해주세요.)</span>
+                            </dd>
+                        </dl>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="ec-base-button gBottom">
+        <a href="#none" class="btnNormalFix sizeM" onclick="history.go(-1); return false;">취소</a>
+        <a href="#none" class="btnSubmitFix sizeM" onclick="{$action_func_join}">가입하기</a>
+    </div>
+
+    <!--@import(/member/join_confirm.html)-->
+</div>
+<!--#ez="1/1"-->
+<script>
+    // alert 관련 코드 완전 제거
+    // 카페24 시스템이 정상적으로 작동하도록 alert을 건드리지 않음
+    console.log("Alert 시스템은 카페24 기본 상태로 유지됩니다.");
+
+    // 전역 변수로 상태 관리
+    let isInitialized = false;
+    let observer = null;
+    let checkInterval = null;
+    let lastCheckTime = 0;
+
+    const check = document.getElementById("contractCheck");
+    const label = document.getElementById("contractCheckLabel");
+    if (check && label) {
+        check.addEventListener("change", function () {
+            label.style.visibility = this.checked ? "visible" : "hidden";
+        });
+    }
+
+    function toggleBizInfoAreaByMemberType() {
+        var memberRadios = document.querySelectorAll('input[name="member_type"]');
+        var bizInfoArea = document.getElementById("bizInfoArea");
+
+        if (!bizInfoArea) {
+            return;
+        }
+
+        var isBusiness = false;
+        memberRadios.forEach(function (radio, index) {
+            if (radio.checked && radio.value === "c") {
+                isBusiness = true;
+            }
+        });
+
+        var newDisplay = isBusiness ? "block" : "none";
+
+        // 현재 상태와 다를 때만 변경 (무한 루프 방지)
+        if (bizInfoArea.style.display !== newDisplay) {
+            console.log(
+                "[DEBUG] 사업자 정보 영역 표시 변경:",
+                isBusiness ? "표시" : "숨김"
+            );
+            bizInfoArea.style.display = newDisplay;
+
+            // 강제로 visibility와 opacity도 설정
+            if (isBusiness) {
+                bizInfoArea.style.visibility = "visible";
+                bizInfoArea.style.opacity = "1";
+                bizInfoArea.style.height = "auto";
+                // 클래스 제거 (혹시 숨김 클래스가 있을 경우)
+                bizInfoArea.classList.remove("displaynone", "hidden", "hide");
+            } else {
+                bizInfoArea.style.visibility = "hidden";
+                bizInfoArea.style.opacity = "0";
+            }
+        }
+    }
+
+    function initMemberTypeListeners() {
+        // 이미 초기화되었으면 중복 실행 방지
+        if (isInitialized) {
+            return;
+        }
+
+        var memberRadios = document.querySelectorAll('input[name="member_type"]');
+
+        // 모든 가능한 셀렉터로 라디오 버튼 찾기
+        if (memberRadios.length === 0) {
+            memberRadios = document.querySelectorAll('input[type="radio"]');
+        }
+
+        memberRadios.forEach(function (radio, index) {
+            // 이벤트 리스너 추가 (중복 방지를 위해 once 옵션 사용하지 않고 직접 관리)
+            radio.addEventListener("change", handleMemberTypeChange);
+            radio.addEventListener("click", handleMemberTypeChange);
+        });
+
+        // 초기 상태 설정
+        setTimeout(function () {
+            toggleBizInfoAreaByMemberType();
+        }, 100);
+
+        isInitialized = true;
+    }
+
+    function handleMemberTypeChange() {
+        setTimeout(function () {
+            toggleBizInfoAreaByMemberType();
+        }, 50);
+    }
+
+    // 강력한 강제 체크 함수 (로그 최소화 및 중복 실행 방지)
+    function forceCheckBusinessMember() {
+        var currentTime = Date.now();
+
+        // 1초 이내에 중복 실행 방지
+        if (currentTime - lastCheckTime < 1000) {
+            return;
+        }
+        lastCheckTime = currentTime;
+
+        var memberRadios = document.querySelectorAll(
+            'input[name="member_type"], input[type="radio"]'
+        );
+        var bizInfoArea = document.getElementById("bizInfoArea");
+
+        if (memberRadios.length > 0 && bizInfoArea) {
+            var isBusiness = false;
+
+            memberRadios.forEach(function (radio, index) {
+                if (
+                    radio.checked &&
+                    (radio.value === "c" ||
+                        radio.value === "company" ||
+                        radio.value === "business")
+                ) {
+                    isBusiness = true;
+                }
+            });
+
+            var currentDisplay = window.getComputedStyle(bizInfoArea).display;
+
+            if (
+                isBusiness &&
+                (currentDisplay === "none" || !bizInfoArea.offsetHeight)
+            ) {
+                console.log("[강제 수정] 사업자 정보 영역 표시");
+
+                // CSS 우선순위를 높이기 위해 인라인 스타일에 !important 추가
+                bizInfoArea.setAttribute(
+                    "style",
+                    "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important;"
+                );
+                bizInfoArea.classList.remove("displaynone", "hidden", "hide");
+            }
+        }
+    }
+
+    // 개선된 MutationObserver (무한 루프 방지)
+    function setupMutationObserver() {
+        // 기존 observer가 있으면 해제
+        if (observer) {
+            observer.disconnect();
+        }
+
+        observer = new MutationObserver(function (mutations) {
+            var shouldReinit = false;
+
+            mutations.forEach(function (mutation) {
+                // bizInfoArea 자체의 style 변경은 무시 (무한 루프 방지)
+                if (
+                    mutation.target.id === "bizInfoArea" &&
+                    mutation.attributeName === "style"
+                ) {
+                    return;
+                }
+
+                // 새로운 라디오 버튼이 추가된 경우만 재초기화
+                if (mutation.type === "childList") {
+                    mutation.addedNodes.forEach(function (node) {
+                        if (node.nodeType === 1) {
+                            // Element node
+                            var hasRadio =
+                                node.querySelector &&
+                                node.querySelector('input[name="member_type"]');
+                            if (hasRadio) {
+                                shouldReinit = true;
+                            }
+                        }
+                    });
+                }
+            });
+
+            if (shouldReinit) {
+                // 초기화 상태 리셋 후 재초기화
+                isInitialized = false;
+                setTimeout(function () {
+                    initMemberTypeListeners();
+                }, 500);
+            }
+        });
+
+        // 전체 문서를 관찰하되 더 제한적으로
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: false, // attributes 관찰 비활성화로 무한 루프 방지
+        });
+    }
+
+    // 페이지 로드 시 초기화
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("[초기화] 페이지 로드 완료");
+
+        initMemberTypeListeners();
+        setupMutationObserver();
+
+        // 추가 안전장치 (한 번만)
+        setTimeout(function () {
+            forceCheckBusinessMember();
+        }, 1000);
+    });
+
+    // 페이지가 완전히 로드된 후에도 한 번 더 실행
+    window.addEventListener("load", function () {
+        setTimeout(function () {
+            if (!isInitialized) {
+                initMemberTypeListeners();
+            }
+            forceCheckBusinessMember();
+        }, 500);
+    });
+
+    // 중복확인 버튼 클릭 시 alert 함수 복원
+    document.addEventListener("click", function (e) {
+        // 휴대폰 인증 버튼 클릭 시
+        if (
+            e.target &&
+            (e.target.id === "btn_action_verify_mobile" ||
+                (e.target.onclick &&
+                    e.target.onclick.toString().includes("verify_mobile")) ||
+                e.target.textContent.includes("인증"))
+        ) {
+            console.log("[이벤트] 휴대폰 인증 버튼 클릭");
+            setTimeout(function () {
+                if (!isInitialized) {
+                    initMemberTypeListeners();
+                }
+                forceCheckBusinessMember();
+            }, 1000);
+        }
+    });
+
+    // 주기적 체크 간격을 늘리고 중복 실행 방지
+    if (!checkInterval) {
+        checkInterval = setInterval(function () {
+            forceCheckBusinessMember();
+        }, 5000); // 5초마다 체크 (기존 3초에서 증가)
+    }
+
+    // 페이지 포커스 시에도 체크 (중복 방지)
+    window.addEventListener("focus", function () {
+        setTimeout(function () {
+            forceCheckBusinessMember();
+        }, 100);
+    });
+
+    // 리사이즈 이벤트에서도 체크 (중복 방지)
+    window.addEventListener("resize", function () {
+        setTimeout(function () {
+            forceCheckBusinessMember();
+        }, 100);
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var openBtn = document.getElementById("openContractBtn");
+        if (openBtn) {
+            openBtn.addEventListener("click", async function () {
+                console.log("Attempting to open contract modal via Flutter handler...");
+                if (window.flutter_inappwebview) {
+                    try {
+                        // Flutter에 모달 열기 요청 및 결과 대기
+                        const agreed = await window.flutter_inappwebview.callHandler(
+                            "openContractModal"
+                        );
+                        console.log("Contract modal result from Flutter:", agreed);
+                        if (typeof agreed === "boolean") {
+                            window.onContractResponse(agreed);
+                        }
+                    } catch (error) {
+                        console.error("Error calling openContractModal handler:", error);
+                        // 앱 환경이 아닐 경우 기존 방식 fallback
+                        window.open(
+                            "/member/contract.html",
+                            "contractPopup",
+                            "width=600,height=800,scrollbars=yes"
+                        );
+                    }
+                } else {
+                    // 앱 환경이 아닐 경우 기존 window.open 동작 유지
+                    window.open(
+                        "/member/contract.html",
+                        "contractPopup",
+                        "width=600,height=800,scrollbars=yes"
+                    );
+                }
+            });
+        }
+    });
+
+    // Flutter로부터 약관 동의 결과를 받을 함수 정의
+    window.onContractResponse = function (agreed) {
+        const check = document.getElementById("contractCheck");
+        const label = document.getElementById("contractCheckLabel");
+        if (check && label) {
+            check.checked = agreed;
+            label.style.visibility = agreed ? "visible" : "hidden";
+            console.log("Contract checkbox updated:", agreed);
+        }
+    };
+
+    // 기존 방식과의 호환성을 위해 유지 (웹 환경에서 사용)
+    window.onContractAgreed = function () {
+        const check = document.getElementById("contractCheck");
+        const label = document.getElementById("contractCheckLabel");
+        if (check && label) {
+            check.checked = true;
+            label.style.visibility = "visible";
+        }
+    };
+
+    // OCR 결과를 저장할 전역 변수
+    let ocrResultData = null;
+
+    // 사업자등록증 OCR 기능
+    document.addEventListener("DOMContentLoaded", function () {
+        const bizLicenseInput = document.getElementById("bizLicense");
+        if (bizLicenseInput) {
+            bizLicenseInput.addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    // 파일 크기 체크 및 압축
+                    processImageFile(file);
+                    // 파일 업로드 후 input 값 초기화 (같은 파일 재업로드 가능하게)
+                    setTimeout(() => {
+                        this.value = "";
+                    }, 100);
+                }
+            });
+        }
+    });
+
+    // 이미지 파일 처리 함수 (압축 포함)
+    function processImageFile(file) {
+        const maxSizeInMB = 2; // 최대 2MB
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
+        console.log("원본 파일 크기:", (file.size / 1024 / 1024).toFixed(2) + "MB");
+
+        if (file.size <= maxSizeInBytes) {
+            // 파일 크기가 적당하면 바로 업로드
+            uploadBusinessLicense(file);
+        } else {
+            // 파일 크기가 크면 압축 후 업로드
+            console.log("파일 크기가 큽니다. 압축을 진행합니다...");
+            compressImage(file, maxSizeInBytes)
+                .then((compressedFile) => {
+                    console.log(
+                        "압축 후 파일 크기:",
+                        (compressedFile.size / 1024 / 1024).toFixed(2) + "MB"
+                    );
+                    uploadBusinessLicense(compressedFile);
+                })
+                .catch((error) => {
+                    console.error("이미지 압축 실패:", error);
+                    alert("이미지 압축에 실패했습니다. 더 작은 파일을 선택해주세요.");
+                });
+        }
+    }
+
+    // 이미지 압축 함수
+    function compressImage(file, maxSizeInBytes) {
+        return new Promise((resolve, reject) => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            const img = new Image();
+
+            img.onload = function () {
+                // 이미지 크기 계산 (최대 1920x1920)
+                let { width, height } = calculateImageSize(img.width, img.height, 1920);
+
+                canvas.width = width;
+                canvas.height = height;
+
+                // 이미지 그리기
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // 압축 품질을 조절하면서 파일 크기 맞추기
+                compressWithQuality(canvas, file.type, maxSizeInBytes)
+                    .then(resolve)
+                    .catch(reject);
+            };
+
+            img.onerror = () => reject(new Error("이미지 로드 실패"));
+            img.src = URL.createObjectURL(file);
+        });
+    }
+
+    // 이미지 크기 계산 함수
+    function calculateImageSize(originalWidth, originalHeight, maxSize) {
+        if (originalWidth <= maxSize && originalHeight <= maxSize) {
+            return { width: originalWidth, height: originalHeight };
+        }
+
+        const ratio = Math.min(maxSize / originalWidth, maxSize / originalHeight);
+        return {
+            width: Math.round(originalWidth * ratio),
+            height: Math.round(originalHeight * ratio),
+        };
+    }
+
+    // 품질 조절하며 압축하는 함수
+    function compressWithQuality(canvas, mimeType, maxSizeInBytes) {
+        return new Promise((resolve, reject) => {
+            let quality = 0.8; // 시작 품질
+            const minQuality = 0.1; // 최소 품질
+
+            function tryCompress() {
+                canvas.toBlob(
+                    function (blob) {
+                        if (!blob) {
+                            reject(new Error("압축 실패"));
+                            return;
+                        }
+
+                        console.log(
+                            `품질 ${quality}: ${(blob.size / 1024 / 1024).toFixed(2)}MB`
+                        );
+
+                        if (blob.size <= maxSizeInBytes || quality <= minQuality) {
+                            // 목표 크기 달성 또는 최소 품질 도달
+                            const compressedFile = new File(
+                                [blob],
+                                "compressed_business_license.jpg",
+                                {
+                                    type: mimeType || "image/jpeg",
+                                    lastModified: Date.now(),
+                                }
+                            );
+                            resolve(compressedFile);
+                        } else {
+                            // 품질을 낮춰서 다시 시도
+                            quality -= 0.1;
+                            tryCompress();
+                        }
+                    },
+                    mimeType || "image/jpeg",
+                    quality
+                );
+            }
+
+            tryCompress();
+        });
+    }
+
+    function uploadBusinessLicense(file) {
+        const progressDiv = document.getElementById("ocrProgress");
+        const resultDiv = document.getElementById("ocrResult");
+        const errorDiv = document.getElementById("ocrError");
+
+        // 상태 초기화
+        if (progressDiv) progressDiv.style.display = "block";
+        if (resultDiv) resultDiv.style.display = "none";
+        if (errorDiv) errorDiv.style.display = "none";
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        console.log(
+            "업로드 시작 - 파일 크기:",
+            (file.size / 1024 / 1024).toFixed(2) + "MB"
+        );
+
+        fetch("https://api.vemontesmanager.com/api/ocr/business-license", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                console.log("응답 상태:", response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (progressDiv) progressDiv.style.display = "none";
+
+                if (data.success) {
+                    // OCR 결과 저장
+                    ocrResultData = data.data;
+
+                    // 폼에 자동으로 값 입력
+                    fillBusinessInfo(data.data);
+
+                    if (resultDiv) resultDiv.style.display = "block";
+                    console.log("OCR 성공:", data);
+                } else {
+                    if (errorDiv) errorDiv.style.display = "block";
+                    console.error("OCR 실패:", data.message);
+                }
+            })
+            .catch((error) => {
+                if (progressDiv) progressDiv.style.display = "none";
+                if (errorDiv) {
+                    errorDiv.style.display = "block";
+                    const errorText = errorDiv.querySelector(".error");
+                    if (errorText) {
+                        if (error.message.includes("413")) {
+                            errorText.textContent =
+                                "파일 크기가 너무 큽니다. 더 작은 파일을 선택해주세요.";
+                        } else if (error.message.includes("Failed to fetch")) {
+                            errorText.textContent =
+                                "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.";
+                        } else {
+                            errorText.textContent =
+                                "사업자등록증 분석에 실패했습니다. 파일을 다시 선택해주세요.";
+                        }
+                    }
+                }
+                console.error("OCR API 호출 실패:", error);
+            });
+    }
+
+    function fillBusinessInfo(ocrData) {
+        console.log("OCR 데이터로 폼 자동 입력 시작:", ocrData);
+
+        // 사업자번호 하이픈 제거
+        const businessNumberWithoutHyphen = ocrData.businessNumber
+            ? ocrData.businessNumber.replace(/-/g, "")
+            : "";
+
+        // 법인번호 분리 (OCR에서 추출된 법인번호를 앞자리-뒷자리로 분리)
+        let corporateNumber1 = "";
+        let corporateNumber2 = "";
+        if (ocrData.corporateNumber) {
+            const corporateNumberParts = ocrData.corporateNumber.replace(/-/g, "");
+            if (corporateNumberParts.length >= 6) {
+                corporateNumber1 = corporateNumberParts.substring(0, 6);
+                corporateNumber2 = corporateNumberParts.substring(6);
+            }
+        }
+
+        console.log("법인번호 분리 결과:", {
+            original: ocrData.corporateNumber,
+            part1: corporateNumber1,
+            part2: corporateNumber2,
+        });
+
+        // 회원 구분 확인 (개인사업자 vs 법인사업자)
+        const memberTypeRadios = document.querySelectorAll(
+            'input[name="member_type"]'
+        );
+        let isBusiness = false;
+        console.log("회원 구분 라디오 버튼들:", memberTypeRadios);
+
+        memberTypeRadios.forEach(function (radio, index) {
+            console.log(`회원구분 라디오 ${index}:`, radio.value, radio.checked);
+            if (radio.checked && radio.value === "c") {
+                isBusiness = true;
+            }
+        });
+
+        // 사업자 구분 확인 (개인사업자 vs 법인사업자) - 여러 방법으로 시도
+        const companyTypeRadios = document.querySelectorAll(
+            'input[name="company_type"]'
+        );
+        let isCorporate = false;
+
+        console.log("사업자 구분 라디오 버튼들:", companyTypeRadios);
+
+        companyTypeRadios.forEach(function (radio, index) {
+            console.log(`사업자구분 라디오 ${index}:`, radio.value, radio.checked);
+            if (radio.checked) {
+                // 다양한 값으로 법인사업자 판단
+                if (
+                    radio.value === "2" ||
+                    radio.value === "company" ||
+                    radio.value === "corporation" ||
+                    radio.value === "법인사업자" ||
+                    radio.value.includes("법인")
+                ) {
+                    isCorporate = true;
+                }
+            }
+        });
+
+        // 만약 라디오 버튼으로 감지가 안 되면, OCR 데이터에 법인 정보가 있으면 법인으로 간주
+        if (!isCorporate && (ocrData.corporateName || ocrData.corporateNumber)) {
+            console.log(
+                "라디오 버튼 감지 실패, OCR 데이터 기반으로 법인사업자로 판단"
+            );
+            isCorporate = true;
+        }
+
+        console.log("최종 판단 결과:", {
+            isBusiness: isBusiness,
+            isCorporate: isCorporate,
+            hasCorporateData: !!(ocrData.corporateName || ocrData.corporateNumber),
+        });
+
+        if (isBusiness || ocrData.corporateName || ocrData.corporateNumber) {
+            if (isCorporate || ocrData.corporateName || ocrData.corporateNumber) {
+                // 법인사업자인 경우 - 법인명과 법인번호 입력
+                console.log("법인사업자 필드 입력 시작");
+
+                // 1. 법인명 필드 업데이트 ({$form.bname}) - 더 넓은 범위에서 검색
+                const bnameInputs = document.querySelectorAll(
+                    'input[name="bname"], select[name="bname"], textarea[name="bname"]'
+                );
+                console.log("법인명 입력 필드들:", bnameInputs);
+
+                bnameInputs.forEach((input, index) => {
+                    if (ocrData.corporateName || ocrData.companyName) {
+                        const corporateName = ocrData.corporateName || ocrData.companyName;
+                        input.value = corporateName;
+                        console.log(`법인명 입력 ${index}:`, input, corporateName);
+
+                        // 입력 이벤트 트리거
+                        input.dispatchEvent(new Event("input", { bubbles: true }));
+                        input.dispatchEvent(new Event("change", { bubbles: true }));
+                    }
+                });
+
+                // 2. 법인번호 첫 번째 부분 ({$form.bssn1})
+                const bssn1Inputs = document.querySelectorAll(
+                    'input[name="bssn1"], select[name="bssn1"], textarea[name="bssn1"]'
+                );
+                console.log("법인번호 첫 번째 부분 입력 필드들:", bssn1Inputs);
+
+                bssn1Inputs.forEach((input, index) => {
+                    if (corporateNumber1) {
+                        input.value = corporateNumber1;
+                        console.log(
+                            `법인번호 첫 번째 부분 입력 ${index}:`,
+                            input,
+                            corporateNumber1
+                        );
+
+                        // 입력 이벤트 트리거
+                        input.dispatchEvent(new Event("input", { bubbles: true }));
+                        input.dispatchEvent(new Event("change", { bubbles: true }));
+                    }
+                });
+
+                // 3. 법인번호 두 번째 부분 ({$form.bssn2})
+                const bssn2Inputs = document.querySelectorAll(
+                    'input[name="bssn2"], select[name="bssn2"], textarea[name="bssn2"]'
+                );
+                console.log("법인번호 두 번째 부분 입력 필드들:", bssn2Inputs);
+
+                bssn2Inputs.forEach((input, index) => {
+                    if (corporateNumber2) {
+                        input.value = corporateNumber2;
+                        console.log(
+                            `법인번호 두 번째 부분 입력 ${index}:`,
+                            input,
+                            corporateNumber2
+                        );
+
+                        // 입력 이벤트 트리거
+                        input.dispatchEvent(new Event("input", { bubbles: true }));
+                        input.dispatchEvent(new Event("change", { bubbles: true }));
+                    }
+                });
+
+                // 4. 사업자번호도 함께 입력 (법인사업자도 사업자번호 필요)
+                const bizInfoArea = document.getElementById("bizInfoArea");
+                if (bizInfoArea) {
+                    const cssnInputs = bizInfoArea.querySelectorAll(
+                        'input[name="cssn"], select[name="cssn"], textarea[name="cssn"]'
+                    );
+                    console.log("사업자번호 입력 필드들:", cssnInputs);
+
+                    cssnInputs.forEach((input, index) => {
+                        if (businessNumberWithoutHyphen) {
+                            input.value = businessNumberWithoutHyphen;
+                            console.log(
+                                `사업자번호 입력 ${index}:`,
+                                input,
+                                businessNumberWithoutHyphen
+                            );
+
+                            // 입력 이벤트 트리거
+                            input.dispatchEvent(new Event("input", { bubbles: true }));
+                            input.dispatchEvent(new Event("change", { bubbles: true }));
+                        }
+                    });
+                }
+
+                console.log("법인사업자 정보 자동 입력 완료:", {
+                    corporateName: ocrData.corporateName || ocrData.companyName,
+                    corporateNumber: ocrData.corporateNumber,
+                    corporateNumber1: corporateNumber1,
+                    corporateNumber2: corporateNumber2,
+                    businessNumber: ocrData.businessNumber,
+                });
+            } else {
+                // 개인사업자인 경우 - 기존 로직
+                console.log("개인사업자 필드 입력 시작");
+
+                // 사업자 정보 영역 내의 카페24 폼 필드들만 업데이트
+                const bizInfoArea = document.getElementById("bizInfoArea");
+                if (bizInfoArea) {
+                    // 1. 상호명 필드 업데이트 (사업자 정보 영역 내의 {$form.cname})
+                    const cnameInputs = bizInfoArea.querySelectorAll(
+                        'input[name="cname"], select[name="cname"], textarea[name="cname"]'
+                    );
+                    cnameInputs.forEach((input) => {
+                        if (ocrData.companyName) {
+                            input.value = ocrData.companyName;
+                            console.log("상호명 입력:", input, ocrData.companyName);
+
+                            // 입력 이벤트 트리거
+                            input.dispatchEvent(new Event("input", { bubbles: true }));
+                            input.dispatchEvent(new Event("change", { bubbles: true }));
+                        }
+                    });
+
+                    // 2. 사업자번호 필드 업데이트 (사업자 정보 영역 내의 {$form.cssn})
+                    const cssnInputs = bizInfoArea.querySelectorAll(
+                        'input[name="cssn"], select[name="cssn"], textarea[name="cssn"]'
+                    );
+                    cssnInputs.forEach((input) => {
+                        if (businessNumberWithoutHyphen) {
+                            input.value = businessNumberWithoutHyphen;
+                            console.log(
+                                "사업자번호 입력:",
+                                input,
+                                businessNumberWithoutHyphen
+                            );
+
+                            // 입력 이벤트 트리거
+                            input.dispatchEvent(new Event("input", { bubbles: true }));
+                            input.dispatchEvent(new Event("change", { bubbles: true }));
+                        }
+                    });
+                }
+
+                console.log("개인사업자 정보 자동 입력 완료:", {
+                    companyName: ocrData.companyName,
+                    businessNumber: ocrData.businessNumber,
+                    businessNumberForForm: businessNumberWithoutHyphen,
+                });
+            }
+
+            // 중복확인 버튼 자동 클릭 제거 (무한 루프 방지)
+            console.log("자동 입력 완료. 중복확인은 수동으로 진행해주세요.");
+        }
+    }
+
+    // 회원가입 버튼 클릭 시 OCR 데이터 전송
+    // 중요: 카페24 기본 회원가입 onclick({$action_func_join}) 흐름은 유지
+    function submitJoinWithOCR() {
+        console.log("submitJoinWithOCR 호출됨");
+
+        // 사업자회원인 경우 거래계약서 동의 체크
+        const memberTypeRadios = document.querySelectorAll(
+            'input[name="member_type"]'
+        );
+        let isBusiness = false;
+        memberTypeRadios.forEach(function (radio) {
+            if (radio.checked && radio.value === "c") isBusiness = true;
+        });
+
+        if (isBusiness) {
+            const contractCheck = document.getElementById("contractCheck");
+            if (!contractCheck || !contractCheck.checked) {
+                alert("거래계약서에 동의해주세요.");
+                return false; // 회원가입 중단
+            }
+        }
+
+        // OCR 데이터가 없으면 카페24 기본 가입 로직으로 진행
+        if (!ocrResultData) {
+            return true;
+        }
+
+        const memberIdInput = document.querySelector('input[name="member_id"]');
+        const userId = memberIdInput ? memberIdInput.value.trim() : "";
+
+        if (!userId) {
+            console.log("사용자 ID가 없어 OCR 전송 생략");
+            return true;
+        }
+
+        // 사업자 구분 확인 (개인사업자 vs 법인사업자)
+        const companyTypeRadios = document.querySelectorAll(
+            'input[name="company_type"]'
+        );
+        let isCorporate = false;
+        companyTypeRadios.forEach(function (radio) {
+            if (
+                radio.checked &&
+                (radio.value === "2" ||
+                    radio.value === "company" ||
+                    radio.value === "corporation")
+            ) {
+                isCorporate = true;
+            }
+        });
+
+        // 현재 폼에서 사용자가 수정한 값들을 가져오기
+        let currentCompanyName = ocrResultData.companyName;
+        let currentBusinessNumber = ocrResultData.businessNumber;
+        let currentCorporateName = ocrResultData.corporateName || "";
+        let currentCorporateNumber = ocrResultData.corporateNumber || "";
+
+        if (isCorporate) {
+            console.log("법인사업자 데이터 수집");
+
+            const bnameInput = document.querySelector('input[name="bname"]');
+            if (bnameInput && bnameInput.value.trim()) {
+                currentCorporateName = bnameInput.value.trim();
+                currentCompanyName = bnameInput.value.trim();
+            }
+
+            const bssn1Input = document.querySelector('input[name="bssn1"]');
+            const bssn2Input = document.querySelector('input[name="bssn2"]');
+            if (
+                bssn1Input &&
+                bssn2Input &&
+                bssn1Input.value.trim() &&
+                bssn2Input.value.trim()
+            ) {
+                currentCorporateNumber =
+                    bssn1Input.value.trim() + "-" + bssn2Input.value.trim();
+            }
+
+            console.log("법인사업자 수집된 데이터:", {
+                corporateName: currentCorporateName,
+                corporateNumber: currentCorporateNumber,
+            });
+        } else {
+            console.log("개인사업자 데이터 수집");
+
+            const bizInfoArea = document.getElementById("bizInfoArea");
+            if (bizInfoArea) {
+                const cnameInput = bizInfoArea.querySelector('input[name="cname"]');
+                if (cnameInput && cnameInput.value.trim()) {
+                    currentCompanyName = cnameInput.value.trim();
+                }
+
+                const cssnInput = bizInfoArea.querySelector('input[name="cssn"]');
+                if (cssnInput && cssnInput.value.trim()) {
+                    const businessNumber = cssnInput.value.trim();
+                    if (businessNumber.length === 10 && !businessNumber.includes("-")) {
+                        currentBusinessNumber =
+                            businessNumber.substring(0, 3) +
+                            "-" +
+                            businessNumber.substring(3, 5) +
+                            "-" +
+                            businessNumber.substring(5);
+                    } else {
+                        currentBusinessNumber = businessNumber;
+                    }
+                }
+            }
+
+            console.log("개인사업자 수집된 데이터:", {
+                companyName: currentCompanyName,
+                businessNumber: currentBusinessNumber,
+            });
+        }
+
+        const updatedOcrData = {
+            ...ocrResultData,
+            companyName: currentCompanyName,
+            businessNumber: currentBusinessNumber,
+            corporateName: currentCorporateName,
+            corporateNumber: currentCorporateNumber,
+        };
+
+        const ocrRegisterData = {
+            userId: userId,
+            ocrResult: updatedOcrData,
+        };
+
+        console.log("업데이트된 OCR 데이터 백엔드로 전송:", ocrRegisterData);
+
+        fetch(
+            "https://api.vemontesmanager.com/api/ocr/business-license/register-from-ocr",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(ocrRegisterData),
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("OCR 데이터 등록 성공:", data);
+            })
+            .catch((error) => {
+                console.error("OCR 데이터 등록 실패:", error);
+            });
+
+        return true;
+    }
+
+    // 가입 버튼 클릭 시 선검증/OCR 전송만 수행하고
+    // 카페24 기본 onclick({$action_func_join})은 그대로 실행
+    document.addEventListener("DOMContentLoaded", function () {
+        let joinButton = document.querySelector('a[onclick*="action_func_join"]');
+        if (!joinButton) {
+            joinButton = document.querySelector(".btnSubmitFix");
+        }
+
+        if (!joinButton) {
+            console.error("회원가입 버튼을 찾을 수 없습니다.");
+            return;
+        }
+
+        joinButton.addEventListener(
+            "click",
+            function (e) {
+                const canProceed = submitJoinWithOCR();
+                if (!canProceed) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+                return true;
+            },
+            true
+        );
+    });
+</script>
