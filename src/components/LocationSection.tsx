@@ -18,7 +18,7 @@ const locationInfo = [
 
 const nearbyPlaces = [
     { category: '교육', places: ['오룡초등학교', '오룡중학교', '남악중학교', '남악고등학교'] },
-    { category: '편의', places: ['롯데아울렛', '롯데마트', '이마트 트레이더스(예정)', '영화관(예정)'] },
+    { category: '편의', places: ['롯데아울렛', '롯데마트', '영화관(예정)'] },
     { category: '자연', places: ['영산강 수변공원', '자전거도로', '생태공원'] },
     { category: '교통', places: ['남악IC', '서해안고속도로', '남해고속도로'] },
 ];

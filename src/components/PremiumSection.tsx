@@ -141,6 +141,35 @@ export default function PremiumSection() {
                     </p>
                 </div>
 
+                {/* 특별혜택 배너 */}
+                <div className="mb-12 p-6 md:p-8 rounded-2xl bg-gradient-to-r from-[#1C2536] to-[#2C3E50] text-white">
+                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                        <div className="flex items-center gap-3">
+                            <span className="text-3xl">🎁</span>
+                            <div>
+                                <span className="text-xs font-semibold tracking-widest text-[#D4AF37] uppercase">Special Benefit</span>
+                                <h3 className="text-xl md:text-2xl font-bold text-white">입주지원금 특별혜택</h3>
+                            </div>
+                        </div>
+                        <div className="w-px h-10 bg-white/20 hidden md:block" />
+                        <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                            {['리모델링 지원', '취득세 지원', '이사비 지원'].map((benefit, idx) => (
+                                <span
+                                    key={idx}
+                                    className="px-4 py-2 rounded-full text-sm font-semibold"
+                                    style={{
+                                        background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%)',
+                                        border: '1px solid rgba(212, 175, 55, 0.4)',
+                                        color: '#D4AF37',
+                                    }}
+                                >
+                                    {benefit}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
                 {/* 벤토 그리드 */}
                 <div ref={gridRef} className="flex flex-col gap-4">
                     {/* 상단: 히어로(kids-station) + 우측 2단 */}
