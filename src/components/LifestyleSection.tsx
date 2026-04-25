@@ -54,7 +54,7 @@ export default function LifestyleSection() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-32 bg-white">
+        <section ref={sectionRef} id="lifestyle" aria-label="입주민 라이프스타일" className="py-24 md:py-32 bg-white">
             <div className="container-custom">
                 <div ref={titleRef} className="text-center mb-12">
                     <span className="inline-block px-4 py-1.5 rounded-full bg-[#D4AF37]/10 text-[#B8960C] text-sm font-semibold mb-4">
@@ -70,12 +70,12 @@ export default function LifestyleSection() {
 
                 <div ref={imageRef}>
                     <Image
-                        src="/images/ribier-fiction.png"
-                        alt="센트레빌 리버파크 하루 라이프스타일"
+                        src="/images/ribier-fiction.webp"
+                        alt="남악 센트레빌 리버파크 입주민 하루 라이프스타일"
                         width={1400}
                         height={400}
+                        sizes="(min-width: 768px) 90vw, 100vw"
                         className="w-full h-auto"
-                        priority={false}
                     />
                 </div>
             </div>

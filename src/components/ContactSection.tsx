@@ -38,6 +38,7 @@ export default function ContactSection() {
         <section
             ref={sectionRef}
             id="contact"
+            aria-label="분양 상담 예약 및 연락처"
             className="py-24 md:py-32 bg-gradient-to-br from-[#0F1C2E] via-[#1C2536] to-[#1A3A4A]"
         >
             <div className="container-custom">

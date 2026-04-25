@@ -64,7 +64,7 @@ export default function CommunitySection() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-32 bg-[#F8F7F4]">
+        <section ref={sectionRef} id="community" aria-label="단지 커뮤니티" className="py-24 md:py-32 bg-[#F8F7F4]">
             <div className="container-custom">
                 {/* 타이틀 */}
                 <div ref={titleRef} className="text-center mb-16">

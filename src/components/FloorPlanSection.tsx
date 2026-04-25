@@ -13,7 +13,7 @@ if (typeof window !== 'undefined') {
 const floorPlans = [
     {
         type: '59㎡A',
-        image: '/images/59a.png',
+        image: '/images/59a.webp',
         units: 140,
         exclusive: '59.71㎡',
         supply: '84.42㎡',
@@ -23,7 +23,7 @@ const floorPlans = [
     },
     {
         type: '59㎡B',
-        image: '/images/59m2b.png',
+        image: '/images/59m2b.webp',
         units: 10,
         exclusive: '59.71㎡',
         supply: '84.00㎡',
@@ -33,7 +33,7 @@ const floorPlans = [
     },
     {
         type: '84㎡A',
-        image: '/images/84m2a.png',
+        image: '/images/84m2a.webp',
         units: 880,
         exclusive: '84.72㎡',
         supply: '110.84㎡',
@@ -44,7 +44,7 @@ const floorPlans = [
     },
     {
         type: '84㎡B',
-        image: '/images/84m2b.png',
+        image: '/images/84m2b.webp',
         units: 228,
         exclusive: '84.98㎡',
         supply: '111.46㎡',
@@ -95,6 +95,8 @@ export default function FloorPlanSection() {
     return (
         <section
             ref={sectionRef}
+            id="floorplan"
+            aria-label="평면도 및 평형별 안내"
             className="py-24 md:py-32 bg-gradient-to-b from-[#1C2536] to-[#0F1C2E]"
         >
             <div className="container-custom">
@@ -143,11 +145,11 @@ export default function FloorPlanSection() {
                         <div className="lg:col-span-3 bg-white rounded-3xl p-4 md:p-6 shadow-lg">
                             <Image
                                 src={activePlan.image}
-                                alt={`${activePlan.type} 평면도`}
+                                alt={`남악 센트레빌 리버파크 ${activePlan.type} 평면도`}
                                 width={1094}
                                 height={1506}
+                                sizes="(min-width: 1024px) 60vw, 100vw"
                                 className="w-full h-auto"
-                                priority
                             />
                         </div>
 

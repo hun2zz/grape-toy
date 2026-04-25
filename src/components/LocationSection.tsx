@@ -65,7 +65,7 @@ export default function LocationSection() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-32 bg-white">
+        <section ref={sectionRef} id="location" aria-label="입지 및 주변 시설" className="py-24 md:py-32 bg-white">
             <div className="container-custom">
                 {/* 타이틀 */}
                 <div ref={titleRef} className="text-center mb-16">
@@ -86,9 +86,10 @@ export default function LocationSection() {
                     <div className="lg:col-span-3 relative rounded-3xl overflow-hidden shadow-xl">
                         <div className="aspect-[4/3] relative">
                             <Image
-                                src="/images/location.png"
-                                alt="남악 센트레빌 리버파크 위치"
+                                src="/images/location.webp"
+                                alt="전남 목포시 남악신도시 내 남악 센트레빌 리버파크 위치"
                                 fill
+                                sizes="(min-width: 1024px) 60vw, 100vw"
                                 className="object-cover"
                             />
                         </div>

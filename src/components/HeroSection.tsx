@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 
 export default function HeroSection() {
@@ -73,16 +74,21 @@ export default function HeroSection() {
     return (
         <section
             ref={heroRef}
+            id="hero"
+            aria-label="남악 센트레빌 리버파크 메인"
             className="relative min-h-screen flex items-center justify-center overflow-hidden"
         >
             {/* 배경 이미지 */}
             <div className="absolute inset-0">
-                {/* 실제 배경 이미지 */}
-                <div
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                    style={{
-                        backgroundImage: 'url(/images/background.png)',
-                    }}
+                <Image
+                    src="/images/background.webp"
+                    alt="남악 센트레빌 리버파크 조감도"
+                    fill
+                    priority
+                    fetchPriority="high"
+                    sizes="100vw"
+                    quality={80}
+                    className="object-cover object-center"
                 />
                 {/* 어두운 오버레이 - 글씨 가독성을 위해 더 진하게 */}
                 <div className="absolute inset-0 bg-black/70" />
@@ -103,31 +109,49 @@ export default function HeroSection() {
 
             {/* 콘텐츠 */}
             <div className="container-custom relative z-10 text-center text-white px-6 py-20">
-                {/* 배지 */}
+                {/* 분양문의 전화번호 - 메인 CTA */}
                 <div
                     ref={badgeRef}
-                    className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-8"
-                    style={{
-                        opacity: 0,
-                        background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
-                        backdropFilter: 'blur(20px)',
-                        border: '1px solid rgba(212, 175, 55, 0.4)',
-                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                    }}
+                    className="mb-10"
+                    style={{ opacity: 0 }}
                 >
-                    <span className="flex items-center gap-2">
-                        <span className="relative w-2.5 h-2.5">
-                            <span className="absolute inset-0 rounded-full bg-[#D4AF37] animate-ping opacity-75" />
-                            <span className="absolute inset-0 rounded-full bg-[#D4AF37]" />
+                    <a
+                        href="tel:061-982-1538"
+                        aria-label="분양문의 전화: 061-982-1538"
+                        className="group inline-flex flex-col items-center gap-2 px-7 py-4 md:px-10 md:py-5 rounded-2xl transition-transform hover:scale-105"
+                        style={{
+                            background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(255, 255, 255, 0.12) 100%)',
+                            backdropFilter: 'blur(20px)',
+                            border: '1.5px solid rgba(212, 175, 55, 0.55)',
+                            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.35)',
+                        }}
+                    >
+                        <span className="flex items-center gap-2 text-xs md:text-sm font-semibold tracking-[0.25em] uppercase text-[#D4AF37]">
+                            <span className="relative w-2 h-2">
+                                <span className="absolute inset-0 rounded-full bg-[#D4AF37] animate-ping opacity-75" />
+                                <span className="absolute inset-0 rounded-full bg-[#D4AF37]" />
+                            </span>
+                            분양문의 · 선착순 동호지정
                         </span>
-                        <span className="text-sm font-bold tracking-wide text-[#D4AF37]">
-                            30개동 1,258세대 대단지
+                        <span className="flex items-center gap-3 text-white">
+                            <svg
+                                className="w-7 h-7 md:w-9 md:h-9 text-[#D4AF37] group-hover:rotate-12 transition-transform"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <span
+                                className="text-3xl md:text-5xl font-black tracking-wider tabular-nums"
+                                style={{
+                                    textShadow: '0 0 24px rgba(212, 175, 55, 0.5), 0 4px 12px rgba(0,0,0,0.4)',
+                                }}
+                            >
+                                061-982-1538
+                            </span>
                         </span>
-                    </span>
-                    <span className="w-px h-4 bg-white/40" />
-                    <span className="text-sm font-semibold text-white">
-                        🎉 선착순 동호지정
-                    </span>
+                    </a>
                 </div>
 
                 {/* 메인 타이틀 */}
