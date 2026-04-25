@@ -18,11 +18,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    {
-      url: `${SITE_URL}/${encodeURIComponent("남악센트레빌자료2.pdf")}`,
-      lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.5,
-    },
   ];
 }
