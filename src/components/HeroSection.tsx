@@ -116,8 +116,8 @@ export default function HeroSection() {
                     style={{ opacity: 0 }}
                 >
                     <a
-                        href="tel:061-982-1538"
-                        aria-label="분양문의 전화: 061-982-1538"
+                        href="tel:061-982-3033"
+                        aria-label="분양문의 전화: 061-982-3033"
                         className="group inline-flex flex-col items-center gap-2 px-7 py-4 md:px-10 md:py-5 rounded-2xl transition-transform hover:scale-105"
                         style={{
                             background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(255, 255, 255, 0.12) 100%)',
@@ -148,7 +148,7 @@ export default function HeroSection() {
                                     textShadow: '0 0 24px rgba(212, 175, 55, 0.5), 0 4px 12px rgba(0,0,0,0.4)',
                                 }}
                             >
-                                061-982-1538
+                                061-982-3033
                             </span>
                         </span>
                     </a>

@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* ========================================
    남악 센트레빌 - 디자인 시스템
@@ -51,18 +53,6 @@
   --transition-fast: 150ms ease;
   --transition-base: 300ms ease;
   --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@theme inline {
-  --color-primary: var(--primary-gold);
-  --color-primary-light: var(--primary-gold-light);
-  --color-secondary: var(--secondary-navy);
-  --color-secondary-light: var(--secondary-navy-light);
-  --color-accent: var(--accent-rose);
-  --color-background: var(--neutral-warm-white);
-  --color-foreground: var(--secondary-navy);
-  --font-sans: var(--font-body);
-  --font-serif: var(--font-display);
 }
 
 /* ========================================

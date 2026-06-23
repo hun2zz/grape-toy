@@ -51,7 +51,7 @@ export default function ConsultationModal() {
                 <div className="space-y-4">
                     {/* 전화 상담 */}
                     <a
-                        href="tel:061-982-1538"
+                        href="tel:061-982-3033"
                         className="group flex items-center gap-4 w-full p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-green-400/30 transition-all"
                     >
                         <div className="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
@@ -61,7 +61,7 @@ export default function ConsultationModal() {
                         </div>
                         <div className="text-left">
                             <span className="block text-white font-semibold text-lg">전화 상담하기</span>
-                            <span className="block text-[#D4AF37] font-bold text-sm">061-982-1538</span>
+                            <span className="block text-[#D4AF37] font-bold text-sm">061-982-3033</span>
                         </div>
                         <svg className="w-5 h-5 text-white/30 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

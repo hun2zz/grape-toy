@@ -51,8 +51,8 @@ export default function Home() {
 
           {/* 분양문의 전화번호 - 큰 CTA */}
           <a
-            href="tel:061-982-1538"
-            aria-label="분양문의 전화: 061-982-1538"
+            href="tel:061-982-3033"
+            aria-label="분양문의 전화: 061-982-3033"
             className="group inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-5 px-8 py-5 mb-8 rounded-2xl transition-transform hover:scale-105"
             style={{
               background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%)',
@@ -70,7 +70,7 @@ export default function Home() {
               className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-wider tabular-nums"
               style={{ textShadow: '0 0 18px rgba(212, 175, 55, 0.4)' }}
             >
-              061-982-1538
+              061-982-3033
             </span>
           </a>
 

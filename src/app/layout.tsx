@@ -121,7 +121,7 @@ const jsonLd = {
       url: SITE_URL,
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+82-61-982-1538",
+        telephone: "+82-61-982-3033",
         contactType: "sales",
         areaServed: "KR",
         availableLanguage: ["Korean"],
@@ -142,7 +142,7 @@ const jsonLd = {
         addressLocality: "목포시",
         streetAddress: "남악신도시",
       },
-      telephone: "+82-61-982-1538",
+      telephone: "+82-61-982-3033",
     },
   ],
 };
