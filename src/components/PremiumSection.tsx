@@ -145,29 +145,48 @@ export default function PremiumSection() {
                 </div>
 
                 {/* 특별혜택 배너 */}
-                <div className="mb-12 p-6 md:p-8 rounded-2xl bg-gradient-to-r from-[#1C2536] to-[#2C3E50] text-white">
-                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-                        <div className="flex items-center gap-3">
-                            <span className="text-3xl">🎁</span>
-                            <div>
-                                <span className="text-xs font-semibold tracking-widest text-[#D4AF37] uppercase">Special Benefit</span>
-                                <h3 className="text-xl md:text-2xl font-bold text-white">입주지원금 특별혜택</h3>
-                            </div>
+                <div className="mb-12 relative overflow-hidden rounded-3xl shadow-[0_24px_70px_-15px_rgba(212,175,55,0.55)]">
+                    {/* 골드 배경 */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#E8CD7A] via-[#D4AF37] to-[#B8960C]" />
+                    {/* 광택 장식 */}
+                    <div className="absolute -top-24 -right-16 w-80 h-80 rounded-full bg-white/25 blur-3xl" />
+                    <div className="absolute -bottom-32 -left-10 w-72 h-72 rounded-full bg-[#1C2536]/15 blur-3xl" />
+
+                    <div className="relative z-10 p-7 md:p-12">
+                        {/* 헤드라인 */}
+                        <div className="text-center mb-7 md:mb-9">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[#1C2536] text-[#E8CD7A] text-[11px] md:text-xs font-bold tracking-[0.25em] mb-3 shadow-md">
+                                SPECIAL BENEFIT
+                            </span>
+                            <h3 className="text-2xl md:text-4xl font-extrabold text-[#1C2536] leading-tight">
+                                입주지원금 <span className="whitespace-nowrap">3대 특별혜택</span>
+                            </h3>
+                            <p className="mt-2.5 text-[#1C2536]/75 text-sm md:text-lg font-semibold">
+                                계약 고객님께 드리는 단지 한정 혜택
+                            </p>
                         </div>
-                        <div className="w-px h-10 bg-white/20 hidden md:block" />
-                        <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                            {['리모델링 지원', '취득세 지원', '이사비 지원'].map((benefit, idx) => (
-                                <span
+
+                        {/* 혜택 3종 카드 */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 md:gap-5">
+                            {[
+                                { icon: '🔨', title: '리모델링 지원', desc: '입주 전 인테리어 비용 지원' },
+                                { icon: '🏛️', title: '취득세 지원', desc: '취득세 부담을 덜어드립니다' },
+                                { icon: '🚚', title: '이사비 지원', desc: '이사 비용 지원 혜택' },
+                            ].map((benefit, idx) => (
+                                <div
                                     key={idx}
-                                    className="px-4 py-2 rounded-full text-sm font-semibold"
-                                    style={{
-                                        background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%)',
-                                        border: '1px solid rgba(212, 175, 55, 0.4)',
-                                        color: '#D4AF37',
-                                    }}
+                                    className="group relative bg-[#1C2536] rounded-2xl px-5 py-6 md:py-7 text-center shadow-lg transition-transform duration-300 hover:-translate-y-1.5"
                                 >
-                                    {benefit}
-                                </span>
+                                    <div className="flex items-center justify-center w-14 h-14 mx-auto mb-3 rounded-full bg-[#D4AF37]/15 text-3xl">
+                                        {benefit.icon}
+                                    </div>
+                                    <h4 className="text-lg md:text-xl font-bold text-white mb-1.5">
+                                        {benefit.title}
+                                    </h4>
+                                    <p className="text-[#E8CD7A] text-xs md:text-sm leading-relaxed">
+                                        {benefit.desc}
+                                    </p>
+                                </div>
                             ))}
                         </div>
                     </div>
