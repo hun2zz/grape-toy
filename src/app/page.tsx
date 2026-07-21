@@ -22,12 +22,63 @@ const faqJsonLd = {
   })),
 };
 
+// 네이버 '웹사이트정보' 확장소재용 캐러셀 마크업 (구조화된 데이터 - ListItem)
+// https://searchadvisor.naver.com 웹마스터 가이드의 캐러셀(ListItem) 형식
+const SITE_URL = "https://xn--q20bo4d2xe81gg3a43jswic52a.kr";
+
+const carouselItems = [
+  {
+    name: "단지안내",
+    image: `${SITE_URL}/images/naver/complex-aerial.jpg`,
+    url: `${SITE_URL}/#premium`,
+  },
+  {
+    name: "구조안내",
+    image: `${SITE_URL}/images/naver/floorplan-84a.jpg`,
+    url: `${SITE_URL}/#floorplan`,
+  },
+  {
+    name: "커뮤니티",
+    image: `${SITE_URL}/images/naver/kids-station.jpg`,
+    url: `${SITE_URL}/#community`,
+  },
+  {
+    name: "요정마을 놀이터",
+    image: `${SITE_URL}/images/naver/fairy-playground.jpg`,
+    url: `${SITE_URL}/#lifestyle`,
+  },
+  {
+    name: "상담예약",
+    image: `${SITE_URL}/images/naver/complex-view.jpg`,
+    url: `${SITE_URL}/consultation`,
+  },
+];
+
+const carouselJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: carouselItems.map((item, i) => ({
+    "@type": "ListItem",
+    item: {
+      "@type": "Thing",
+      name: item.name,
+      image: item.image,
+      url: item.url,
+    },
+    position: String(i + 1),
+  })),
+};
+
 export default function Home() {
   return (
     <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(carouselJsonLd) }}
       />
       <HeroSection />
       <PremiumSection />
