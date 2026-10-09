@@ -159,7 +159,7 @@ export default function PremiumSection() {
                                 SPECIAL BENEFIT
                             </span>
                             <h3 className="text-2xl md:text-4xl font-extrabold text-[#1C2536] leading-tight">
-                                입주지원금 <span className="whitespace-nowrap">3대 특별혜택</span>
+                                즉시입주 <span className="whitespace-nowrap">특별혜택</span>
                             </h3>
                             <p className="mt-2.5 text-[#1C2536]/75 text-sm md:text-lg font-semibold">
                                 계약 고객님께 드리는 단지 한정 혜택

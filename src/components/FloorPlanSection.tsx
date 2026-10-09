@@ -20,6 +20,7 @@ const floorPlans = [
         contract: '114.67㎡',
         description: '효율적인 공간설계, 품격있는 디자인',
         features: ['3Bay 구조', '팬트리 공간', '드레스룸'],
+        soldOut: true,
     },
     {
         type: '59㎡B',
@@ -30,6 +31,7 @@ const floorPlans = [
         contract: '114.25㎡',
         description: '짜임새 있는 활용도, 실속과 품격',
         features: ['효율적 동선', '넓은 거실', '수납공간'],
+        soldOut: true,
     },
     {
         type: '84㎡A',
@@ -130,6 +132,11 @@ export default function FloorPlanSection() {
                                     BEST
                                 </span>
                             )}
+                            {plan.soldOut && (
+                                <span className="absolute -top-2 -right-2 px-2 py-0.5 bg-gray-500 text-white text-[10px] rounded-full">
+                                    마감
+                                </span>
+                            )}
                         </button>
                     ))}
                 </div>
@@ -164,6 +171,11 @@ export default function FloorPlanSection() {
                                     <span className="px-3 py-1 bg-white/10 text-white/80 rounded-full text-sm">
                                         {activePlan.units}세대
                                     </span>
+                                    {activePlan.soldOut && (
+                                        <span className="px-3 py-1 bg-gray-500/20 text-gray-300 rounded-full text-sm font-semibold">
+                                            마감
+                                        </span>
+                                    )}
                                 </div>
                                 <p className="text-white/70 leading-relaxed">
                                     {activePlan.description}
@@ -209,12 +221,21 @@ export default function FloorPlanSection() {
                             </div>
 
                             {/* CTA */}
-                            <button
-                                onClick={openConsultationModal}
-                                className="btn-primary w-full py-4"
-                            >
-                                {activePlan.type} 상담 신청하기
-                            </button>
+                            {activePlan.soldOut ? (
+                                <button
+                                    disabled
+                                    className="w-full py-4 rounded-full bg-white/10 text-white/50 font-semibold cursor-not-allowed"
+                                >
+                                    {activePlan.type} 마감되었습니다
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={openConsultationModal}
+                                    className="btn-primary w-full py-4"
+                                >
+                                    {activePlan.type} 상담 신청하기
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
